@@ -1,7 +1,15 @@
 <div style="max-width: 1000px">
   <mat-tab-group>
-    <mat-tab label="OWON XDM1241 DMM">
-      <ng-template matTabContent><app-xdm1241></app-xdm1241> </ng-template>
+    <mat-tab label="Devices">
+      <ng-template matTabContent><app-devices></app-devices> </ng-template>
+    </mat-tab>
+    <mat-tab label="Automation">
+      <ng-template matTabContent
+        ><app-automation></app-automation>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Charts">
+      <ng-template matTabContent><app-chart></app-chart> </ng-template>
     </mat-tab>
   </mat-tab-group>
 </div>
