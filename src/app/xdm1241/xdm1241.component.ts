@@ -27,7 +27,9 @@ export class Xdm1241Component implements OnDestroy {
         if (result) {
           this._type = type;
         } else {
-          alert('Could not connect to XDM1241!');
+          alert(
+            'Could not connect to XDM1241! Check it is plugged in and turned on.'
+          );
           this._type = '';
         }
       });
