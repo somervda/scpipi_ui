@@ -8,9 +8,16 @@ import { Component, Input } from '@angular/core';
   styleUrl: './ledpanel.component.scss',
 })
 export class LedpanelComponent {
-  _number: number = 0;
+  _mainText: string = '';
+  _subText: string = '';
 
-  @Input() set number(v: number) {
-    this._number = v;
+  @Input('mainText')
+  set mainText(val: string) {
+    this._mainText = val;
+  }
+
+  @Input('subText')
+  set subText(val: string) {
+    this._subText = val;
   }
 }

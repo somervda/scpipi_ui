@@ -1,13 +1,21 @@
 .main-panel {
-  width: 180px;
-  height: 110px;
+  width: 200px;
+  height: 100px;
   background-color: black;
 }
 .main-text {
   font-family: "Courier New", monospace;
-  font-size: 60px;
+  font-size: 50px;
   font-weight: bold;
   color: rgb(221, 221, 5);
-  line-height: 110px;
+  padding-top: 30px;
+  text-align: center;
+}
+
+.sub-text {
+  font-family: "Courier New", monospace;
+  font-size: 20px;
+  color: rgb(221, 221, 5);
+  padding-top: 20px;
   text-align: center;
 }
