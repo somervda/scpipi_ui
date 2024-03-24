@@ -1,13 +1,75 @@
-<div class="grid-main" >
-  <div><app-ledpanel mainText="0.0000" subText="mVDC" ></app-ledpanel></div>
+<div class="grid-main">
+  <div><app-ledpanel mainText="0.0000" subText="mVDC"></app-ledpanel></div>
   <div class="grid-functions">
-    <div><button mat-stroked-button class="fButton" (click)="configure('voltdc')">Volt DC</button></div>
-    <div><button mat-stroked-button class="fButton" (click)="configure('voltac')">Volt AC</button></div>
-    <div><button mat-stroked-button class="fButton" (click)="configure('currdc')">Amps DC</button></div>
-    <div><button mat-stroked-button class="fButton" (click)="configure('currac')">Amps AC</button></div>
-    <div><button mat-stroked-button class="fButton" (click)="configure('res')">Ohms</button></div>
-    <div><button mat-stroked-button class="fButton" (click)="configure('freq')">Freq.</button></div>
-    <div><button mat-stroked-button class="fButton" (click)="configure('temp')">Temp.</button></div>
-
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="configure('voltdc')"
+        [color]="_type == 'voltdc' ? 'primary' : null"
+      >
+        Volt DC
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="configure('voltac')"
+        [color]="_type == 'voltac' ? 'primary' : null"
+      >
+        Volt AC
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="configure('currdc')"
+        [color]="_type == 'currdc' ? 'primary' : null"
+      >
+        Amps DC
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="configure('currac')"
+        [color]="_type == 'currac' ? 'primary' : null"
+      >
+        Amps AC
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="configure('res')"
+        [color]="_type == 'res' ? 'primary' : null"
+      >
+        Ohms
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="configure('freq')"
+        [color]="_type == 'freq' ? 'primary' : null"
+      >
+        Freq.
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="configure('temp')"
+        [color]="_type == 'temp' ? 'primary' : null"
+      >
+        Temp.
+      </button>
+    </div>
   </div>
 </div>

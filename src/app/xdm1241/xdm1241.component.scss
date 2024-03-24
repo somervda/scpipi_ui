@@ -3,7 +3,6 @@
     display: grid;
     grid-template-columns: 200px 1fr;
     grid-gap: 10px;
-
   }
 }
 
@@ -28,6 +27,9 @@
 }
 
 .fButton {
-  width: 100px;
+  width: 110px;
   margin-bottom: 10px;
+  border-style: solid;
+  border-color: gray;
+  border-width: 1px;
 }
