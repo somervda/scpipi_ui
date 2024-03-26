@@ -2,6 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Globals } from '../app.config';
 
+export interface Measure {
+  value: string;
+  mainText: string;
+  subText: string;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -10,7 +16,7 @@ export class Xdm1241Service {
 
   connect() {
     let result = this.http.get<string>(
-      'http://' + Globals.HOSTANDPORT + '/xpm1241/connect'
+      'http://' + Globals.HOSTANDPORT + '/xdm1241/connect'
     );
     return result;
   }
@@ -19,7 +25,7 @@ export class Xdm1241Service {
     let result = this.http.get<string>(
       'http://' +
         Globals.HOSTANDPORT +
-        '/xpm1241/config/' +
+        '/xdm1241/config/' +
         type +
         '/' +
         range.toString() +
@@ -30,8 +36,8 @@ export class Xdm1241Service {
   }
 
   measure() {
-    let result = this.http.get<string>(
-      'http://' + Globals.HOSTANDPORT + '/xpm1241/measure'
+    let result = this.http.get<Measure>(
+      'http://' + Globals.HOSTANDPORT + '/xdm1241/measure'
     );
     return result;
   }

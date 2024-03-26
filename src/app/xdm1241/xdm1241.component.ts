@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
 import { LedpanelComponent } from '../ledpanel/ledpanel.component';
 import { MatButtonModule } from '@angular/material/button';
-import { Xdm1241Service } from '../services/xdm1241.service';
+import { Measure, Xdm1241Service } from '../services/xdm1241.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -14,6 +14,7 @@ import { Subscription } from 'rxjs';
 export class Xdm1241Component implements OnDestroy {
   xdm1241Config$$: Subscription | undefined;
   _type: string = '';
+  _measure: Measure = { value: '', mainText: '', subText: 'blue' };
 
   constructor(private xdm1241Service: Xdm1241Service) {}
 
@@ -33,6 +34,14 @@ export class Xdm1241Component implements OnDestroy {
           this._type = '';
         }
       });
+  }
+
+  measure(): void {
+    this.xdm1241Service.measure().subscribe((measure) => {
+      this._measure = measure;
+
+      console.log(this._measure);
+    });
   }
 
   ngOnDestroy(): void {

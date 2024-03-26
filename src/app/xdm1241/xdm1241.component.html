@@ -1,5 +1,10 @@
 <div class="grid-main">
-  <div><app-ledpanel mainText="0.0000" subText="mVDC"></app-ledpanel></div>
+  <div>
+    <app-ledpanel
+      [mainText]="_measure.mainText"
+      [subText]="_measure.subText"
+    ></app-ledpanel>
+  </div>
   <div class="grid-functions">
     <div>
       <button
@@ -69,6 +74,11 @@
         [color]="_type == 'temp' ? 'primary' : null"
       >
         Temp.
+      </button>
+    </div>
+    <div>
+      <button mat-flat-button class="fButton" (click)="measure()">
+        Measure
       </button>
     </div>
   </div>
