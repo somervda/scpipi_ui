@@ -60,6 +60,16 @@
       <button
         mat-flat-button
         class="fButton"
+        (click)="configure('cap')"
+        [color]="_type == 'cap' ? 'primary' : null"
+      >
+        Capacitance
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
         (click)="configure('freq')"
         [color]="_type == 'freq' ? 'primary' : null"
       >
@@ -74,11 +84,6 @@
         [color]="_type == 'temp' ? 'primary' : null"
       >
         Temp.
-      </button>
-    </div>
-    <div>
-      <button mat-flat-button class="fButton" (click)="measure()">
-        Measure
       </button>
     </div>
   </div>

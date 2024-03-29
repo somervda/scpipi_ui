@@ -1,8 +1,8 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LedpanelComponent } from '../ledpanel/ledpanel.component';
 import { MatButtonModule } from '@angular/material/button';
-import { Measure, Xdm1241Service } from '../services/xdm1241.service';
-import { Subscription } from 'rxjs';
+import { MeasureShow, Xdm1241Service } from '../services/xdm1241.service';
+import { Subscription, interval } from 'rxjs';
 
 @Component({
   selector: 'app-xdm1241',
@@ -11,12 +11,30 @@ import { Subscription } from 'rxjs';
   templateUrl: './xdm1241.component.html',
   styleUrl: './xdm1241.component.scss',
 })
-export class Xdm1241Component implements OnDestroy {
+export class Xdm1241Component implements OnDestroy, OnInit {
   xdm1241Config$$: Subscription | undefined;
+  measureRefresh$$: Subscription | undefined;
+  _connected = false;
   _type: string = '';
-  _measure: Measure = { value: '', mainText: '', subText: 'blue' };
+  _measure: MeasureShow = {
+    success: false,
+    value: '',
+    mainText: '',
+    subText: '',
+    type: '',
+    range: 0,
+    rate: 0,
+  };
 
   constructor(private xdm1241Service: Xdm1241Service) {}
+
+  ngOnInit() {
+    this.measureRefresh$$ = interval(3000).subscribe((val) => {
+      if (this._connected) {
+        this.measure();
+      }
+    });
+  }
 
   configure(type: string): void {
     console.log('configure', type);
@@ -26,8 +44,10 @@ export class Xdm1241Component implements OnDestroy {
       .subscribe((result) => {
         console.log('Configure:', type, result);
         if (result) {
+          this._connected = true;
           this._type = type;
         } else {
+          this._connected = false;
           alert(
             'Could not connect to XDM1241! Check it is plugged in and turned on.'
           );
@@ -37,16 +57,27 @@ export class Xdm1241Component implements OnDestroy {
   }
 
   measure(): void {
-    this.xdm1241Service.measure().subscribe((measure) => {
+    this.xdm1241Service.measureShow().subscribe((measure) => {
       this._measure = measure;
-
-      console.log(this._measure);
+      if (this._measure.success) {
+        this._connected = true;
+        if (this._measure.type) {
+          this._type = this._measure.type;
+          console.log('set measure type', this._type);
+        }
+      } else {
+        this._connected = false;
+        alert('Not successful measurement');
+      }
     });
   }
 
   ngOnDestroy(): void {
     if (this.xdm1241Config$$) {
       this.xdm1241Config$$.unsubscribe();
+    }
+    if (this.measureRefresh$$) {
+      this.measureRefresh$$.unsubscribe();
     }
   }
 }

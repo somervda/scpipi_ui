@@ -2,10 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Globals } from '../app.config';
 
+export interface MeasureShow {
+  success: false;
+  value?: string;
+  mainText?: string;
+  subText?: string;
+  type?: string;
+  range?: number;
+  rate?: number;
+}
+
 export interface Measure {
-  value: string;
-  mainText: string;
-  subText: string;
+  success: false;
+  value?: number;
 }
 
 @Injectable({
@@ -31,6 +40,13 @@ export class Xdm1241Service {
         range.toString() +
         '/' +
         rate.toString()
+    );
+    return result;
+  }
+
+  measureShow() {
+    let result = this.http.get<MeasureShow>(
+      'http://' + Globals.HOSTANDPORT + '/xdm1241/measureShow'
     );
     return result;
   }

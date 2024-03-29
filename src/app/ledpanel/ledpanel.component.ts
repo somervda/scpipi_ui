@@ -12,12 +12,14 @@ export class LedpanelComponent {
   _subText: string = '';
 
   @Input('mainText')
-  set mainText(val: string) {
-    this._mainText = val;
+  set mainText(val: string | undefined) {
+    if (val) this._mainText = val;
+    else this._mainText = '';
   }
 
   @Input('subText')
-  set subText(val: string) {
-    this._subText = val;
+  set subText(val: string | undefined) {
+    if (val) this._subText = val;
+    else this._subText = '';
   }
 }
