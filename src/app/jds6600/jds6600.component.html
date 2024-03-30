@@ -1,0 +1,42 @@
+<div class="grid-functions">
+  <div>
+    <mat-form-field>
+      <mat-label>Frequency Hz</mat-label>
+      <input matInput [(ngModel)]="frequency" />
+    </mat-form-field>
+  </div>
+  <div>
+    <mat-form-field>
+      <mat-label>Level Volts</mat-label>
+      <input matInput [(ngModel)]="level" />
+    </mat-form-field>
+  </div>
+
+  <div>
+    <mat-form-field>
+      <mat-label>Waveform</mat-label>
+      <mat-select [(ngModel)]="waveform">
+        <mat-option value="0">Sine</mat-option>
+        <mat-option value="1">Square</mat-option>
+        <mat-option value="2">Pulse wave</mat-option>
+        <mat-option value="3">Triangular wave</mat-option>
+        <mat-option value="4">Partial sine</mat-option>
+        <mat-option value="5">CMOS wave</mat-option>
+        <mat-option value="6">DC level</mat-option>
+        <mat-option value="7">Half wave</mat-option>
+        <mat-option value="8">Full wave</mat-option>
+        <mat-option value="9">Positive step wave</mat-option>
+        <mat-option value="10">Negative step wave</mat-option>
+        <mat-option value="11">Noise wave</mat-option>
+        <mat-option value="12">Expotential-</mat-option>
+        <mat-option value="13">ExpotentialDecay</mat-option>
+        <mat-option value="14">Multi-Tone</mat-option>
+        <mat-option value="15">Sinc</mat-option>
+        <mat-option value="16">Lorenz pulse</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div>
+    <button mat-flat-button class="fButton" (click)="apply()">Apply</button>
+  </div>
+</div>
