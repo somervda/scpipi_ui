@@ -1,9 +1,10 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatAccordion, MatExpansionModule } from '@angular/material/expansion';
 import { Xdm1241Component } from '../xdm1241/xdm1241.component';
 import { Jds6600Component } from '../jds6600/jds6600.component';
+import { Sds1052Component } from '../sds1052/sds1052.component';
 
 import { MatIconModule } from '@angular/material/icon';
 
@@ -18,6 +19,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatIconModule,
     Xdm1241Component,
     Jds6600Component,
+    Sds1052Component,
   ],
   templateUrl: './devices.component.html',
   styleUrl: './devices.component.scss',

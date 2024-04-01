@@ -1,0 +1,35 @@
+@media (min-width: 400px) {
+  .grid-main {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    grid-gap: 10px;
+  }
+}
+
+@media (min-width: 700px) {
+  .grid-functions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 10px;
+    max-width: 400px;
+    grid-gap: 10px;
+  }
+}
+
+@media (min-width: 400px) and (max-width: 700px) {
+  .grid-functions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    max-width: 400px;
+    grid-gap: 10px;
+  }
+}
+
+.fButton {
+  width: 150px;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-color: gray;
+  border-width: 1px;
+}

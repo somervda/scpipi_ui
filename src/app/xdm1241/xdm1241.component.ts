@@ -3,6 +3,7 @@ import { LedpanelComponent } from '../ledpanel/ledpanel.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MeasureShow, Xdm1241Service } from '../services/xdm1241.service';
 import { Subscription, interval } from 'rxjs';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-xdm1241',
@@ -26,7 +27,10 @@ export class Xdm1241Component implements OnDestroy, OnInit {
     rate: 0,
   };
 
-  constructor(private xdm1241Service: Xdm1241Service) {}
+  constructor(
+    private xdm1241Service: Xdm1241Service,
+    private _snackBar: MatSnackBar
+  ) {}
 
   ngOnInit() {
     this.measureRefresh$$ = interval(3000).subscribe((val) => {
@@ -48,8 +52,13 @@ export class Xdm1241Component implements OnDestroy, OnInit {
           this._type = type;
         } else {
           this._connected = false;
-          alert(
-            'Could not connect to XDM1241! Check it is plugged in and turned on.'
+
+          this._snackBar.open(
+            'Could not connect to XDM1241! Check it is plugged in and turned on.',
+            'OK',
+            {
+              duration: 5000,
+            }
           );
           this._type = '';
         }

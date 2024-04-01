@@ -1,0 +1,100 @@
+<div class="grid-main">
+  <div>
+    <app-ledpanel
+      [mainText]="_measure.mainText"
+      [subText]="_measure.subText"
+    ></app-ledpanel>
+  </div>
+  <div class="grid-functions">
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('PKPK')"
+        [color]="_type == 'PKPK' ? 'primary' : null"
+      >
+        Peak&nbsp;to&nbsp;Peak
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('MAX')"
+        [color]="_type == 'MAX' ? 'primary' : null"
+      >
+        Maximum
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('MIN')"
+        [color]="_type == 'MIN' ? 'primary' : null"
+      >
+        Minimum
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('AMPL')"
+        [color]="_type == 'AMPL' ? 'primary' : null"
+      >
+        Amplitude
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('MEAN')"
+        [color]="_type == 'MEAN' ? 'primary' : null"
+      >
+        Average
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('RISE')"
+        [color]="_type == 'RISE' ? 'primary' : null"
+      >
+        Rise
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('FALL')"
+        [color]="_type == 'FALL' ? 'primary' : null"
+      >
+        Fall
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('FREQ')"
+        [color]="_type == 'FREQ' ? 'primary' : null"
+      >
+        Frequency
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('PHA')"
+        [color]="_type == 'PHA' ? 'primary' : null"
+      >
+        Phase
+      </button>
+    </div>
+  </div>
+</div>
