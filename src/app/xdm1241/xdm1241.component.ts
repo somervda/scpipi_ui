@@ -76,7 +76,13 @@ export class Xdm1241Component implements OnDestroy, OnInit {
         }
       } else {
         this._connected = false;
-        alert('Not successful measurement');
+        this._snackBar.open(
+          'Not a successful measurement.',
+          'OK',
+          {
+            duration: 5000,
+          }
+        );
       }
     });
   }
