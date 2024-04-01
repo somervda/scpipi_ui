@@ -5,6 +5,9 @@ import { Globals } from '../app.config';
 export interface Measure {
   success: false;
   value?: number;
+  type?: string;
+  mainText?: string;
+  subText?: string
 }
 
 @Injectable({

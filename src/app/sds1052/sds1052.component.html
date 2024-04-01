@@ -1,8 +1,8 @@
 <div class="grid-main">
   <div>
     <app-ledpanel
-      mainText="0.000"
-      subText="xxx"
+      [mainText]="_measure.mainText"
+      [subText]="_measure.subText"
     ></app-ledpanel>
   </div>
   <div class="grid-functions">
@@ -11,7 +11,7 @@
         mat-flat-button
         class="fButton"
         (click)="measure('PKPK')"
-        [color]="_type == 'PKPK' ? 'primary' : null"
+        [color]="_measure.type == 'PKPK' ? 'primary' : null"
       >
         Peak&nbsp;to&nbsp;Peak
       </button>
@@ -21,7 +21,7 @@
         mat-flat-button
         class="fButton"
         (click)="measure('MAX')"
-        [color]="_type == 'MAX' ? 'primary' : null"
+        [color]="_measure.type == 'MAX' ? 'primary' : null"
       >
         Maximum
       </button>
@@ -31,7 +31,7 @@
         mat-flat-button
         class="fButton"
         (click)="measure('MIN')"
-        [color]="_type == 'MIN' ? 'primary' : null"
+        [color]="_measure.type == 'MIN' ? 'primary' : null"
       >
         Minimum
       </button>
@@ -41,7 +41,7 @@
         mat-flat-button
         class="fButton"
         (click)="measure('AMPL')"
-        [color]="_type == 'AMPL' ? 'primary' : null"
+        [color]="_measure.type == 'AMPL' ? 'primary' : null"
       >
         Amplitude
       </button>
@@ -51,7 +51,7 @@
         mat-flat-button
         class="fButton"
         (click)="measure('MEAN')"
-        [color]="_type == 'MEAN' ? 'primary' : null"
+        [color]="_measure.type == 'MEAN' ? 'primary' : null"
       >
         Average
       </button>
@@ -61,7 +61,7 @@
         mat-flat-button
         class="fButton"
         (click)="measure('RISE')"
-        [color]="_type == 'RISE' ? 'primary' : null"
+        [color]="_measure.type == 'RISE' ? 'primary' : null"
       >
         Rise
       </button>
@@ -71,7 +71,7 @@
         mat-flat-button
         class="fButton"
         (click)="measure('FALL')"
-        [color]="_type == 'FALL' ? 'primary' : null"
+        [color]="_measure.type == 'FALL' ? 'primary' : null"
       >
         Fall
       </button>
@@ -81,7 +81,7 @@
         mat-flat-button
         class="fButton"
         (click)="measure('FREQ')"
-        [color]="_type == 'FREQ' ? 'primary' : null"
+        [color]="_measure.type == 'FREQ' ? 'primary' : null"
       >
         Frequency
       </button>
@@ -91,7 +91,7 @@
         mat-flat-button
         class="fButton"
         (click)="measure('PHA')"
-        [color]="_type == 'PHA' ? 'primary' : null"
+        [color]="_measure.type == 'PHA' ? 'primary' : null"
       >
         Phase
       </button>

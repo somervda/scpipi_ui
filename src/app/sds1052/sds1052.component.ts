@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { LedpanelComponent } from '../ledpanel/ledpanel.component';
 import { MatButtonModule } from '@angular/material/button';
 import { Subscription, interval } from 'rxjs';
@@ -12,11 +12,15 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   templateUrl: './sds1052.component.html',
   styleUrl: './sds1052.component.scss',
 })
-export class Sds1052Component {
+export class Sds1052Component implements OnInit,OnDestroy{
+  measureRefresh$$: Subscription | undefined;
   _type = '';
   _measure: Measure = {
     success: false,
-    value: 0
+    value: 0,
+    type: '',
+    mainText: '',
+    subText:''
   };
   _connected = false;
 
@@ -25,16 +29,22 @@ export class Sds1052Component {
     private _snackBar: MatSnackBar
   ) {}
 
+  ngOnInit(): void {
+    this.measureRefresh$$ = interval(3000).subscribe((val) => {
+      if (this._connected) {
+        if (this._measure.type) {
+        this.measure(this._measure.type);
+        }
+      }
+    });
+  }
+  
   measure(type: string): void {
     this.sds1052Service.measure(type).subscribe((measure) => {
       console.log("measure:",measure)
       this._measure = measure;
       if (this._measure.success) {
         this._connected = true;
-        // if (this._measure.type) {
-        //   this._type = this._measure.type;
-        //   console.log('set measure type', this._type);
-        // }
       } else {
         this._connected = false;
         this._snackBar.open(
@@ -43,8 +53,14 @@ export class Sds1052Component {
           {
             duration: 5000,
           }
-        );
-      }
-    });
+          );
+        }
+      });
+  }
+
+  ngOnDestroy(): void {
+    if (this.measureRefresh$$) {
+      this.measureRefresh$$.unsubscribe();
+    }
   }
 }
