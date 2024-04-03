@@ -1,1 +1,110 @@
-<p>dho804 works!</p>
+<div class="grid-main">
+  <div>
+    <app-ledpanel
+      [mainText]="_measure.mainText"
+      [subText]="_measure.subText"
+    ></app-ledpanel>
+  </div>
+  <div class="grid-functions">
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('VPP')"
+        [color]="_measure.type == 'VPP' ? 'primary' : null"
+      >
+        Peak&nbsp;to&nbsp;Peak
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('VMAX')"
+        [color]="_measure.type == 'VMAX' ? 'primary' : null"
+      >
+        Maximum
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('VMIN')"
+        [color]="_measure.type == 'VMIN' ? 'primary' : null"
+      >
+        Minimum
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('VRMS')"
+        [color]="_type == 'VRMS' ? 'primary' : null"
+      >
+        RMS
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('VAMP')"
+        [color]="_measure.type == 'VAMP' ? 'primary' : null"
+      >
+        Amplitude
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('VAVG')"
+        [color]="_measure.type == 'VAVG' ? 'primary' : null"
+      >
+        Average
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('RTIM')"
+        [color]="_measure.type == 'RTIM' ? 'primary' : null"
+      >
+        Rise
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('FTIM')"
+        [color]="_measure.type == 'FTIM' ? 'primary' : null"
+      >
+        Fall
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('FREQ')"
+        [color]="_measure.type == 'FREQ' ? 'primary' : null"
+      >
+        Frequency
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
+        (click)="measure('RPH')"
+        [color]="_measure.type == 'RPH' ? 'primary' : null"
+      >
+        Phase
+      </button>
+    </div>
+  </div>
+</div>

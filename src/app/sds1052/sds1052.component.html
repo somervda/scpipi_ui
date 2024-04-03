@@ -40,6 +40,16 @@
       <button
         mat-flat-button
         class="fButton"
+        (click)="measure('RMS')"
+        [color]="_type == 'RMS' ? 'primary' : null"
+      >
+        RMS
+      </button>
+    </div>
+    <div>
+      <button
+        mat-flat-button
+        class="fButton"
         (click)="measure('AMPL')"
         [color]="_measure.type == 'AMPL' ? 'primary' : null"
       >
