@@ -6,7 +6,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient } from '@angular/common/http';
 
 export enum Globals {
-  HOSTANDPORT = 'scpipi.local:8000',
+  HOSTANDPORT = 'scpipi.home:8000',
 }
 
 export const appConfig: ApplicationConfig = {
