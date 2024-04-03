@@ -43,4 +43,25 @@ export class AutomationService {
   get(id: number): AutomationItem | undefined {
     return this._map.get(id);
   }
+
+  getScript() {
+    let CRLF = "\r\n"
+    let as = "#!/usr/bin/python3" + CRLF + CRLF;
+    as += "from xdm1241 import Xdm1241" + CRLF;
+    as += "from jds6600 import Jds6600" + CRLF;
+    as += "from sds1052 import Sds1052" + CRLF;
+    as += "from dho804 import dho804" + CRLF;
+    as += "import time" + CRLF;
+    as += "" + CRLF;
+    as += "#  Setup environment" + CRLF;
+    as += "" + CRLF;
+    as += "" + CRLF;
+    as += "" + CRLF;
+
+
+
+    
+    
+    
+  }
 }
