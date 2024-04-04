@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MeasureShow, Xdm1241Service } from '../services/xdm1241.service';
 import { Subscription, interval } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import {
   AutomationService,
   Meter,
@@ -13,7 +14,7 @@ import {
 @Component({
   selector: 'app-xdm1241',
   standalone: true,
-  imports: [LedpanelComponent, MatButtonModule],
+  imports: [LedpanelComponent, MatButtonModule, MatTooltipModule],
   templateUrl: './xdm1241.component.html',
   styleUrl: './xdm1241.component.scss',
 })
@@ -22,6 +23,7 @@ export class Xdm1241Component implements OnDestroy, OnInit {
   measureRefresh$$: Subscription | undefined;
   _connected = false;
   _type: string = '';
+  _addShow = false;
   _measure: MeasureShow = {
     success: false,
     value: '',
@@ -48,7 +50,8 @@ export class Xdm1241Component implements OnDestroy, OnInit {
 
   configure(type: string): void {
     console.log('configure', type);
-    this._type = type;
+    // this._type = type;
+
     this.xdm1241Config$$ = this.xdm1241Service
       .configure(type, 0, 0)
       .subscribe((result) => {
@@ -56,9 +59,15 @@ export class Xdm1241Component implements OnDestroy, OnInit {
         if (result) {
           this._connected = true;
           this._type = type;
+          this._addShow = true;
+          let meter: Meter = { deviceName: 'xdm1241', type: this._type };
+          if (this.automationService.findMeter(meter)) {
+            this._addShow = false;
+          }
         } else {
           this._connected = false;
 
+          this._addShow = false;
           this._snackBar.open(
             'Could not connect to XDM1241! Check it is plugged in and turned on.',
             'OK',
@@ -75,6 +84,7 @@ export class Xdm1241Component implements OnDestroy, OnInit {
     console.log('addAutomation', this._type);
     let meter: Meter = { deviceName: 'xdm1241', type: this._type };
     console.log(meter, this.automationService.addMeter(meter));
+    this._addShow = false;
   }
 
   measure(): void {

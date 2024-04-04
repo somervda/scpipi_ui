@@ -53,12 +53,21 @@ export class AutomationService {
   }
 
   removeMeter(meter: Meter) {
-    var index = this._automation.meters.indexOf(meter);
+    console.log('removeMeter:', meter);
+    var index = this._automation.meters.findIndex(
+      (element) =>
+        element.deviceName == meter.deviceName && element.type == meter.type
+    );
+    console.log('index:', index);
     if (index > -1) {
       this._automation.meters.splice(index, 1);
       return true;
     }
     return false;
+  }
+
+  getMetersArray() {
+    return this._automation.meters;
   }
 
   getJson() {

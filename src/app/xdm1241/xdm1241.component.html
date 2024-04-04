@@ -86,15 +86,18 @@
         Temp.
       </button>
     </div>
-    @if (_type != "") {
+    @if (this._addShow) {
     <div>
       <button
         mat-flat-button
         class="automationButton"
         (click)="addAutomation()"
-        color="darkcyan"
+        color="null"
+        matTooltip="Add XDM1241 as a new automation metering device [{{
+          _type
+        }}]"
       >
-        Add Meter
+        +Meter
       </button>
     </div>
     }

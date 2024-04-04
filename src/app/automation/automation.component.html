@@ -1,2 +1,34 @@
-<p>automation works!</p>
-{{ json }}
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" #mytable>
+  <!--- Note that these columns can be defined in any order.
+          The actual rendered columns are set as a property on the row definition" -->
+
+  <!-- deviceName Column -->
+  <ng-container matColumnDef="deviceName">
+    <th mat-header-cell *matHeaderCellDef>Device.</th>
+    <td mat-cell *matCellDef="let element">{{ element.deviceName }}</td>
+  </ng-container>
+
+  <!-- Type -->
+  <ng-container matColumnDef="type">
+    <th mat-header-cell *matHeaderCellDef>Type.</th>
+    <td mat-cell *matCellDef="let element">{{ element.type }}</td>
+  </ng-container>
+
+  <!-- delete -->
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef>Delete?</th>
+    <td mat-cell *matCellDef="let element">
+      <button
+        mat-icon-button
+        color="none"
+        aria-label="Remove"
+        (click)="removeMeter(element.deviceName, element.type)"
+      >
+        <mat-icon>delete_outline</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
