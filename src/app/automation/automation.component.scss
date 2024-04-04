@@ -1,1 +1,35 @@
+@media (min-width: 800px) {
+  .grid-functions {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-gap: 10px;
+    max-width: 400px;
+    grid-gap: 10px;
+  }
+}
 
+@media (min-width: 400px) and (max-width: 800px) {
+  .grid-functions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 10px;
+    max-width: 400px;
+    grid-gap: 10px;
+  }
+}
+
+.doubleWide {
+  grid-column: 1 / span 3;
+}
+
+.fButton {
+  width: 110px;
+  margin-bottom: 10px;
+  border-style: solid;
+  border-color: gray;
+  border-width: 1px;
+}
+
+.right-align {
+  text-align: right;
+}
