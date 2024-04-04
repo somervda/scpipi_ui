@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 export interface AutomationItem {
   deviceName: string;
-  isDriver: boolean;
+  isPrimary: boolean;
   type?: string;
   option1?: string;
   option2?: string;
