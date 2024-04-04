@@ -4,6 +4,11 @@ import { MatButtonModule } from '@angular/material/button';
 import { MeasureShow, Xdm1241Service } from '../services/xdm1241.service';
 import { Subscription, interval } from 'rxjs';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import {
+  AutomationService,
+  Meter,
+  Automation,
+} from '../services/automation.service';
 
 @Component({
   selector: 'app-xdm1241',
@@ -29,6 +34,7 @@ export class Xdm1241Component implements OnDestroy, OnInit {
 
   constructor(
     private xdm1241Service: Xdm1241Service,
+    private automationService: AutomationService,
     private _snackBar: MatSnackBar
   ) {}
 
@@ -65,6 +71,12 @@ export class Xdm1241Component implements OnDestroy, OnInit {
       });
   }
 
+  addAutomation(): void {
+    console.log('addAutomation', this._type);
+    let meter: Meter = { deviceName: 'xdm1241', type: this._type };
+    console.log(meter, this.automationService.addMeter(meter));
+  }
+
   measure(): void {
     this.xdm1241Service.measureShow().subscribe((measure) => {
       this._measure = measure;
@@ -76,13 +88,9 @@ export class Xdm1241Component implements OnDestroy, OnInit {
         }
       } else {
         this._connected = false;
-        this._snackBar.open(
-          'Not a successful measurement.',
-          'OK',
-          {
-            duration: 5000,
-          }
-        );
+        this._snackBar.open('Not a successful measurement.', 'OK', {
+          duration: 5000,
+        });
       }
     });
   }

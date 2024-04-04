@@ -1,12 +1,19 @@
 import { Injectable } from '@angular/core';
 
-export interface AutomationItem {
+export interface Meter {
   deviceName: string;
-  isPrimary: boolean;
-  type?: string;
-  option1?: string;
-  option2?: string;
-  option3?: string;
+  type: string;
+}
+export interface Automation {
+  name: string;
+  description: string;
+  start: number;
+  step: number;
+  stepOperator: string;
+  limit: number;
+  maxSeconds: number;
+  stepSeconds: number;
+  meters: Meter[];
 }
 
 @Injectable({
@@ -14,54 +21,63 @@ export interface AutomationItem {
 })
 export class AutomationService {
   // Use a Map for Automation data
-  _map = new Map<number, AutomationItem>();
-  _start = 0;
-  _step = 0;
-  _stepOperator = '+';
-  _limit = 0;
+  _automation: Automation = {
+    name: '',
+    description: '',
+    start: 0,
+    step: 0,
+    stepOperator: '+',
+    limit: 0,
+    maxSeconds: 0,
+    stepSeconds: 0,
+    meters: [],
+  };
 
   constructor() {}
 
-  nextId() {
-    let nextId = 0;
-    for (let id of this._map.keys()) {
-      if (nextId < id) {
-        nextId = id;
-      }
+  findMeter(meter: Meter) {
+    return this._automation.meters.find(
+      (element) =>
+        element.deviceName == meter.deviceName && element.type == meter.type
+    );
+  }
+
+  addMeter(meter: Meter) {
+    if (this.findMeter(meter)) {
+      // meter already in array
+      return false;
+    } else {
+      this._automation.meters.push(meter);
+      return true;
     }
-    return nextId + 1;
   }
 
-  add(item: AutomationItem) {
-    this._map.set(this.nextId(), item);
+  removeMeter(meter: Meter) {
+    var index = this._automation.meters.indexOf(meter);
+    if (index > -1) {
+      this._automation.meters.splice(index, 1);
+      return true;
+    }
+    return false;
   }
 
-  remove(id: number) {
-    this._map.delete(id);
+  getJson() {
+    // Return stringified version of automation parameters (For saving)
+    return JSON.stringify(this._automation);
   }
 
-  get(id: number): AutomationItem | undefined {
-    return this._map.get(id);
-  }
-
-  getScript() {
-    let CRLF = "\r\n"
-    let as = "#!/usr/bin/python3" + CRLF + CRLF;
-    as += "from xdm1241 import Xdm1241" + CRLF;
-    as += "from jds6600 import Jds6600" + CRLF;
-    as += "from sds1052 import Sds1052" + CRLF;
-    as += "from dho804 import dho804" + CRLF;
-    as += "import time" + CRLF;
-    as += "" + CRLF;
-    as += "#  Setup environment" + CRLF;
-    as += "" + CRLF;
-    as += "" + CRLF;
-    as += "" + CRLF;
-
-
-
-    
-    
-    
+  makeScript() {
+    let CRLF = '\r\n';
+    let as = '#!/usr/bin/python3' + CRLF + CRLF;
+    as += 'from xdm1241 import Xdm1241' + CRLF;
+    as += 'from jds6600 import Jds6600' + CRLF;
+    as += 'from sds1052 import Sds1052' + CRLF;
+    as += 'from dho804 import dho804' + CRLF;
+    as += 'import time' + CRLF;
+    as += '' + CRLF;
+    as += '#  Setup environment' + CRLF;
+    as += '' + CRLF;
+    as += '' + CRLF;
+    as += '' + CRLF;
   }
 }
