@@ -7,6 +7,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { FormsModule } from '@angular/forms';
 import {
   AutomationService,
@@ -28,21 +29,22 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     MatCardModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatTooltipModule,
   ],
   templateUrl: './automation.component.html',
   styleUrl: './automation.component.scss',
 })
 export class AutomationComponent {
   displayedColumns: string[] = ['deviceName', 'type', 'delete'];
-  dataSource;
+  automation: Automation;
 
-  stepSeconds = 5;
-  maxSeconds = 2000;
-  jds6600StartHz = 1000;
-  jds6600StepFactor = 1.0595;
-  JDS6600Operator = '+';
-  jds6600StopHz = 20000;
-  jds6600: boolean = false;
+  // stepSeconds = 5;
+  // maxSeconds = 2000;
+  // jds6600StartHz = 1000;
+  // jds6600StepFactor = 1.0595;
+  // JDS6600Operator = '+';
+  // jds6600StopHz = 20000;
+  // jds6600: boolean = false;
 
   @ViewChild(MatTable) table: MatTable<Meter> | undefined;
 
@@ -50,7 +52,8 @@ export class AutomationComponent {
     private automationService: AutomationService,
     private _snackBar: MatSnackBar
   ) {
-    this.dataSource = this.automationService.getMetersArray();
+    this.automation = this.automationService.getAutomation();
+    // this.dataSource = this.automationService.getMetersArray();
   }
 
   removeMeter(deviceName: string, type: string) {
@@ -61,9 +64,13 @@ export class AutomationComponent {
   }
 
   refreshTable() {
-    this.dataSource = this.automationService.getMetersArray();
+    this.automation = this.automationService.getAutomation();
     if (this.table) {
       this.table.renderRows();
     }
+  }
+
+  generate() {
+    console.log(this.automationService.generate());
   }
 }
