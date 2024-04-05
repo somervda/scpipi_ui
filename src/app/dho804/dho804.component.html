@@ -106,5 +106,20 @@
         Phase
       </button>
     </div>
+    @if (this._addShow) {
+    <div>
+      <button
+        mat-flat-button
+        class="automationButton"
+        (click)="addAutomation()"
+        color="null"
+        matTooltip="Add DHO804 as a new automation metering device [{{
+          _type
+        }}]"
+      >
+        +Meter
+      </button>
+    </div>
+    }
   </div>
 </div>

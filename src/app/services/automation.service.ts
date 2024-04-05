@@ -91,9 +91,13 @@ export class AutomationService {
     // Setup environment
     as += '#  Setup environment' + CRLF;
     as += 'start=time.time()' + CRLF;
+    as += 'step=1' + CRLF;
     // If using signal generator jds6600
     if (this._automation.useJds6600) {
       as += 'jds6600 = Jds6600(quiet=True)' + CRLF;
+      as += 'if not jds6600.connect():' + CRLF;
+      as += '    print("Error: jds6600 did not connected, ending....")' + CRLF;
+      as += '    exit(0)' + CRLF;
       as += 'freq=' + this._automation.jds6600StartHz.toString() + CRLF;
     }
     as +=
@@ -101,6 +105,7 @@ export class AutomationService {
       this._automation.maxSeconds.toString() +
       ') > time.time():' +
       CRLF;
+    as += '    print(step,time.time())' + CRLF;
     // Add in signal generator jds6600
     if (this._automation.useJds6600) {
       if (
@@ -108,7 +113,7 @@ export class AutomationService {
         this._automation.jds6600Operator == '*'
       ) {
         as += '    if freq>' + this._automation.jds6600StopHz + ':' + CRLF;
-        as += '        break;' + CRLF;
+        as += '        break' + CRLF;
       } else {
         as += '    if freq<' + this._automation.jds6600StopHz + ':' + CRLF;
         as += '        break' + CRLF;
@@ -117,7 +122,7 @@ export class AutomationService {
       as += '    jds6600.configure(freq,1,0)' + CRLF;
       // Set freq to next value
       as +=
-        '    freq' +
+        '    freq ' +
         this._automation.jds6600Operator +
         '= ' +
         this._automation.jds6600StepFactor.toString() +
@@ -126,6 +131,7 @@ export class AutomationService {
     // sleep until next step cycle
     as +=
       '    time.sleep(' + this._automation.stepSeconds.toString() + ')' + CRLF;
+    as += '    step+=1' + CRLF;
     return as;
   }
 }
