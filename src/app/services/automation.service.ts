@@ -95,8 +95,9 @@ export class AutomationService {
 
     let CRLF = '\r\n';
     let as = '#!/usr/bin/python3' + CRLF + CRLF;
-    as = 'import sys' + CRLF;
-    as = 'sys.path.append("../lib")' + CRLF;
+    // Assume running from scpipi folder
+    as += 'import sys' + CRLF;
+    as += 'sys.path.append("lib")' + CRLF + CRLF;
     as += 'from xdm1241 import Xdm1241' + CRLF;
     as += 'from jds6600 import Jds6600' + CRLF;
     as += 'from sds1052 import Sds1052' + CRLF;
@@ -169,6 +170,17 @@ export class AutomationService {
       as +=
         '    rowJson=helper.addRowMeasurement(rowJson,"frequency","",freq)' +
         CRLF;
+      as +=
+        '    helper.writeStatus("' +
+        this._automation.name +
+        '","running",step,"",freq)' +
+        CRLF;
+    } else {
+      as +=
+        '    helper.writeStatus("' +
+        this._automation.name +
+        '","running",step,"")' +
+        CRLF;
     }
 
     // Add device measurements
@@ -224,6 +236,7 @@ export class AutomationService {
       this._automation.name.trim() +
       '",tableJson)' +
       CRLF;
+    as += 'helper.removeStatus()' + CRLF;
     return as;
   }
 }
