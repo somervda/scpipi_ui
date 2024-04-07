@@ -95,6 +95,8 @@ export class AutomationService {
 
     let CRLF = '\r\n';
     let as = '#!/usr/bin/python3' + CRLF + CRLF;
+    as = 'import sys' + CRLF;
+    as = 'sys.path.append("../lib")' + CRLF;
     as += 'from xdm1241 import Xdm1241' + CRLF;
     as += 'from jds6600 import Jds6600' + CRLF;
     as += 'from sds1052 import Sds1052' + CRLF;
