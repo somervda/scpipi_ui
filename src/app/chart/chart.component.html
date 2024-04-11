@@ -1,19 +1,52 @@
 <mat-card
   ><mat-card-content>
+    <div class="grid-functions">
+      <div>
+        <button mat-flat-button class="fButton" (click)="getResults()">
+          Get Data
+        </button>
+      </div>
+      @if (this.resultRows) {
+      <div style="grid-column: 1">
+        <mat-form-field>
+          <mat-label>Xaxis</mat-label>
+          <mat-select [(ngModel)]="xAxisName">
+            @for (series of resultSeries; track series) {
+            <mat-option [value]="series">{{ series }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <div>
+        <mat-form-field>
+          <mat-label>Yaxis</mat-label>
+          <mat-select [(ngModel)]="yAxisName">
+            @for (series of resultSeries; track series) {
+            <mat-option [value]="series">{{ series }}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+      @if (xAxisName>'' && yAxisName>'') {
+      <div style="grid-column: 1">
+        <button mat-flat-button class="fButton" (click)="drawChart()">
+          Draw Chart
+        </button>
+      </div>
+      } }
+    </div>
+
     <ngx-charts-line-chart
-    [view]="view"
-    [legend]="legend"
-    [showXAxisLabel]="showXAxisLabel"
-    [showYAxisLabel]="showYAxisLabel"
-    [xAxis]="xAxis"
-    [yAxis]="yAxis"
-    [xAxisLabel]="xAxisLabel"
-    [yAxisLabel]="yAxisLabel"
-    [timeline]="timeline"
-    [results]="multi"
-    (select)="onSelect($event)"
-    (activate)="onActivate($event)"
-    (deactivate)="onDeactivate($event)"
+      [legend]="legend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="xAxis"
+      [yAxis]="yAxis"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [timeline]="timeline"
+      [results]="multi"
     >
-  </ngx-charts-line-chart>
-</mat-card-content></mat-card>
+    </ngx-charts-line-chart> </mat-card-content
+></mat-card>

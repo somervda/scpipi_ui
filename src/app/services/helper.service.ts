@@ -8,15 +8,10 @@ import { Globals } from '../app.config';
 export class HelperService {
   constructor(private http: HttpClient) {}
 
-
   getResult(name: string) {
     let result = this.http.get<any>(
-      'http://' +
-        Globals.HOSTANDPORT +
-        '/result/' +
-        name 
+      'http://' + Globals.HOSTANDPORT + '/result/' + name
     );
     return result;
   }
 }
-
