@@ -25,25 +25,7 @@ import { Subscription } from 'rxjs';
   styleUrl: './chart.component.scss',
 })
 export class ChartComponent implements OnDestroy {
-  multi = [
-    {
-      name: 'frequency',
-      series: [
-        {
-          name: '2010',
-          value: 8940000,
-        },
-        {
-          name: '2011',
-          value: 5000000,
-        },
-        {
-          name: '2012',
-          value: 7200000,
-        },
-      ],
-    },
-  ];
+  multi: any;
 
   // options
   legend: boolean = false;
@@ -55,14 +37,16 @@ export class ChartComponent implements OnDestroy {
   showXAxisLabel: boolean = true;
   xAxisLabel: string = 'Year';
   yAxisLabel: string = 'Hz';
-  timeline: boolean = true;
+  timeline: boolean = false;
+  view: [number, number] = [800, 400];
 
   // colorScheme = {
   //   domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
   // };
 
   getResults$$: Subscription | undefined;
-  resultRows: [] | undefined;
+  resultName = 'auto';
+  resultRows: any;
   resultSeries: string[] = [];
   xAxisName = '';
   yAxisName = '';
@@ -85,13 +69,59 @@ export class ChartComponent implements OnDestroy {
       for (const item in firstRow) {
         if (firstRow.hasOwnProperty(item)) {
           seriesNames.push(item.toString());
+          // console.log(item.toString(), firstRow[item]);
         }
       }
     }
     return seriesNames;
   }
 
-  drawChart() {}
+  drawChart() {
+    this.multi = this.buildData();
+  }
+
+  buildData() {
+    // Build data to be used by ngx-chart
+    // Just create a simple single series chart
+
+    console.log('build Data');
+    let seriesData = [];
+    if (this.resultRows.length > 0) {
+      for (let i = 0; i < this.resultRows.length; i++) {
+        let row = this.resultRows[i];
+        let x;
+        let y;
+        for (const item in row) {
+          if (row.hasOwnProperty(item)) {
+            // console.log(item.toString(), row[item]);
+            if (item.toString() == this.xAxisName) {
+              switch (this.xAxisName) {
+                case 'timestamp':
+                  x = new Date(row[item]);
+                  break;
+                // case 'frequency':
+                //   x = Math.log10(row[item]);
+                //   break;
+                default:
+                  x = row[item];
+              }
+            }
+
+            if (item.toString() == this.yAxisName) {
+              y = row[item];
+            }
+          }
+        }
+        let seriesRow = { name: x, value: y };
+        seriesData.push(seriesRow);
+      }
+    }
+    let newSeries = [{ name: <string>this.resultName, series: seriesData }];
+    this.xAxisLabel = this.xAxisName;
+    this.yAxisLabel = this.yAxisName;
+    console.log(newSeries);
+    return newSeries;
+  }
 
   ngOnDestroy(): void {
     if (this.getResults$$) {
