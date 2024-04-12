@@ -14,4 +14,18 @@ export class HelperService {
     );
     return result;
   }
+
+  getResults() {
+    let results = this.http.get<string[]>(
+      'http://' + Globals.HOSTANDPORT + '/results'
+    );
+    return results;
+  }
+
+  getScripts() {
+    let result = this.http.get<any>(
+      'http://' + Globals.HOSTANDPORT + '/scripts'
+    );
+    return result;
+  }
 }

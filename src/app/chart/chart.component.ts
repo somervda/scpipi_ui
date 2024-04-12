@@ -39,28 +39,55 @@ export class ChartComponent implements OnDestroy {
   yAxisLabel: string = 'Hz';
   timeline: boolean = false;
   view: [number, number] = [800, 400];
-
+  displayChart = false;
 
   // colorScheme = {
   //   domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
   // };
 
+  // The json data from one result
+  getResult$$: Subscription | undefined;
+  // An array of available results
   getResults$$: Subscription | undefined;
   resultName = 'auto';
   resultRows: any;
   resultSeries: string[] = [];
   xAxisName = '';
   yAxisName = '';
+  results: string[] = [];
 
-  constructor(private helperService: HelperService) {}
+  constructor(private helperService: HelperService) {
+    // get the array of available result files
+    this.getResults$$ = this.helperService.getResults().subscribe((results) => {
+      results.forEach((result) => {
+        let resultName = result.replace('results/', '').replace('.json', '');
+        this.results.push(resultName);
+      });
+    });
+  }
 
   getResults() {
-    this.getResults$$ = this.helperService
-      .getResult('auto')
+    this.displayChart = false;
+    this.getResult$$ = this.helperService
+      .getResult(this.resultName)
       .subscribe((resultRows) => {
         this.resultRows = resultRows;
         this.resultSeries = this.getSeriesNames(this.resultRows);
       });
+  }
+
+  downloadResults() {
+    const file = new window.Blob([JSON.stringify(this.resultRows)], {
+      type: 'application/json',
+    });
+
+    const downloader = document.createElement('a');
+    downloader.style.display = 'none';
+
+    const fileURL = URL.createObjectURL(file);
+    downloader.href = fileURL;
+    downloader.download = this.resultName + '.json';
+    downloader.click();
   }
 
   getSeriesNames(resultRows: any) {
@@ -79,6 +106,7 @@ export class ChartComponent implements OnDestroy {
 
   drawChart() {
     this.multi = this.buildData();
+    this.displayChart = true;
   }
 
   buildData() {
@@ -124,13 +152,20 @@ export class ChartComponent implements OnDestroy {
     return newSeries;
   }
 
-    // apply pow10 to xAxis tick values and tootip value
-    getMathPower(val: number){
-      return Math.round(Math.pow(10,val));
-    }
+  hideChart() {
+    console.log('hide');
+    this.displayChart = false;
+  }
 
+  // apply pow10 to xAxis tick values and tootip value
+  getMathPower(val: number) {
+    return Math.round(Math.pow(10, val));
+  }
 
   ngOnDestroy(): void {
+    if (this.getResult$$) {
+      this.getResult$$.unsubscribe();
+    }
     if (this.getResults$$) {
       this.getResults$$.unsubscribe();
     }
