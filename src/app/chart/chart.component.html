@@ -1,5 +1,4 @@
-<mat-card
-  ><mat-card-content>
+<mat-card><mat-card-content>
     <div class="grid-functions">
       <div>
         <button mat-flat-button class="fButton" (click)="getResults()">
@@ -36,18 +35,28 @@
       </div>
       } }
     </div>
+    @if(xAxisName=='frequency') {
+    <ngx-charts-line-chart [legend]="legend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline"
+      [results]="multi" [view]="view" [xAxisTickFormatting]="getMathPower">
 
-    <ngx-charts-line-chart
-      [legend]="legend"
-      [showXAxisLabel]="showXAxisLabel"
-      [showYAxisLabel]="showYAxisLabel"
-      [xAxis]="xAxis"
-      [yAxis]="yAxis"
-      [xAxisLabel]="xAxisLabel"
-      [yAxisLabel]="yAxisLabel"
-      [timeline]="timeline"
-      [results]="multi"
-      [view]="view"
-    >
-    </ngx-charts-line-chart> </mat-card-content
-></mat-card>
+      <ng-template #tooltipTemplate let-model="model">
+        <span class="tooltip-label">{{getMathPower(model.name)}}Hz</span>
+        <span class="tooltip-val">{{model.value}}</span>
+      </ng-template>
+      <ng-template #seriesTooltipTemplate let-model="model">
+        <span class="tooltip-label" *ngFor="let series of model">
+          {{series.value}}
+        </span>
+      </ng-template>
+    </ngx-charts-line-chart>
+    }
+    @else {
+      <ngx-charts-line-chart [legend]="legend" [showXAxisLabel]="showXAxisLabel" [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="xAxis" [yAxis]="yAxis" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel" [timeline]="timeline"
+      [results]="multi" [view]="view">
+    </ngx-charts-line-chart>
+
+    }
+
+  </mat-card-content></mat-card>

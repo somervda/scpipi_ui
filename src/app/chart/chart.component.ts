@@ -40,6 +40,7 @@ export class ChartComponent implements OnDestroy {
   timeline: boolean = false;
   view: [number, number] = [800, 400];
 
+
   // colorScheme = {
   //   domain: ['#5AA454', '#E44D25', '#CFC0BB', '#7aa3e5', '#a8385d', '#aae3f5']
   // };
@@ -99,9 +100,9 @@ export class ChartComponent implements OnDestroy {
                 case 'timestamp':
                   x = new Date(row[item]);
                   break;
-                // case 'frequency':
-                //   x = Math.log10(row[item]);
-                //   break;
+                case 'frequency':
+                  x = Math.log10(row[item]);
+                  break;
                 default:
                   x = row[item];
               }
@@ -122,6 +123,12 @@ export class ChartComponent implements OnDestroy {
     console.log(newSeries);
     return newSeries;
   }
+
+    // apply pow10 to xAxis tick values and tootip value
+    getMathPower(val: number){
+      return Math.round(Math.pow(10,val));
+    }
+
 
   ngOnDestroy(): void {
     if (this.getResults$$) {
