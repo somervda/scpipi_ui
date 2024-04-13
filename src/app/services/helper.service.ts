@@ -17,14 +17,28 @@ export class HelperService {
 
   getResults() {
     let results = this.http.get<string[]>(
-      'http://' + Globals.HOSTANDPORT + '/results'
+      'http://' + Globals.HOSTANDPORT + '/result'
     );
     return results;
   }
 
+  deleteResult(name: string) {
+    let result = this.http.delete<any>(
+      'http://' + Globals.HOSTANDPORT + '/result/' + name
+    );
+    return result;
+  }
+
   getScripts() {
     let result = this.http.get<any>(
-      'http://' + Globals.HOSTANDPORT + '/scripts'
+      'http://' + Globals.HOSTANDPORT + '/script'
+    );
+    return result;
+  }
+
+  deleteScript(name: string) {
+    let result = this.http.delete<any>(
+      'http://' + Globals.HOSTANDPORT + '/script/' + name
     );
     return result;
   }
