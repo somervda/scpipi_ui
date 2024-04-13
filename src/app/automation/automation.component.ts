@@ -15,6 +15,7 @@ import {
   Automation,
 } from '../services/automation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { HelperService } from '../services/helper.service';
 
 @Component({
   selector: 'app-automation',
@@ -50,7 +51,8 @@ export class AutomationComponent {
 
   constructor(
     private automationService: AutomationService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private helperService: HelperService
   ) {
     this.automation = this.automationService.getAutomation();
     // this.dataSource = this.automationService.getMetersArray();
@@ -71,6 +73,9 @@ export class AutomationComponent {
   }
 
   generate() {
-    console.log(this.automationService.generate());
+    let script = this.automationService.generate();
+    this.helperService
+      .saveScript('autox', script)
+      .subscribe((results) => console.log(results));
   }
 }
