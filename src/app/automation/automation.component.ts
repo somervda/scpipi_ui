@@ -16,6 +16,7 @@ import {
 } from '../services/automation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HelperService } from '../services/helper.service';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-automation',
@@ -38,21 +39,17 @@ import { HelperService } from '../services/helper.service';
 export class AutomationComponent {
   displayedColumns: string[] = ['deviceName', 'type', 'delete'];
   automation: Automation;
+  script = "";
+  scriptHTML = "";
 
-  // stepSeconds = 5;
-  // maxSeconds = 2000;
-  // jds6600StartHz = 1000;
-  // jds6600StepFactor = 1.0595;
-  // JDS6600Operator = '+';
-  // jds6600StopHz = 20000;
-  // jds6600: boolean = false;
 
   @ViewChild(MatTable) table: MatTable<Meter> | undefined;
 
   constructor(
     private automationService: AutomationService,
     private _snackBar: MatSnackBar,
-    private helperService: HelperService
+    private helperService: HelperService,
+    private sanitizer: DomSanitizer
   ) {
     this.automation = this.automationService.getAutomation();
     // this.dataSource = this.automationService.getMetersArray();
@@ -73,9 +70,19 @@ export class AutomationComponent {
   }
 
   generate() {
-    let script = this.automationService.generate();
+    this.script="";
+    this.scriptHTML="";
+    this.script = this.automationService.generate();
+    let CRLF = '\r\n';
+    this.scriptHTML=this.script.split(CRLF).join('<br>').split(" ").join('&nbsp;');
+
+  }
+
+  save() {
     this.helperService
-      .saveScript('autox', script)
+      .saveScript(this.automation.name, this.script)
       .subscribe((results) => console.log(results));
   }
+
+
 }

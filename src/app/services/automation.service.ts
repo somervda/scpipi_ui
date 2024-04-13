@@ -187,7 +187,7 @@ export class AutomationService {
     as += CRLF + '    #  Collect Measurements' + CRLF;
     this._automation.meters.forEach((element: Meter) => {
       switch (element.deviceName) {
-        case 'sds1052':
+        case 'sds1052': {
           as += '    measure=sds1052.measure("' + element.type + '")' + CRLF;
           as +=
             '    rowJson=helper.addRowMeasurement(rowJson,"' +
@@ -196,6 +196,30 @@ export class AutomationService {
             element.type +
             '",str(measure["measure"]))' +
             CRLF;
+            break;
+          }
+        case 'dho804': {
+          as += '    measure=dho804.measure("' + element.type + '")' + CRLF;
+          as +=
+            '    rowJson=helper.addRowMeasurement(rowJson,"' +
+            element.deviceName +
+            '","' +
+            element.type +
+            '",str(measure["measure"]))' +
+            CRLF;
+            break;
+        }
+        case 'xdm1241': {
+          as += '    measure=xdm1241.measure("' + element.type + '")' + CRLF;
+          as +=
+            '    rowJson=helper.addRowMeasurement(rowJson,"' +
+            element.deviceName +
+            '","' +
+            element.type +
+            '",str(measure["measure"]))' +
+            CRLF;
+            break;
+        }
       }
     });
     as += '    print("rowJson:",rowJson)' + CRLF;
