@@ -16,7 +16,7 @@ import {
 } from '../services/automation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HelperService } from '../services/helper.service';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-automation',
@@ -37,22 +37,28 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrl: './automation.component.scss',
 })
 export class AutomationComponent {
+  getSchemas$$: Subscription | undefined;
   displayedColumns: string[] = ['deviceName', 'type', 'delete'];
   automation: Automation;
-  script = "";
-  scriptHTML = "";
-
+  script = '';
+  scriptHTML = '';
+  schemaName = '';
+  schemaNames: string[] = [];
 
   @ViewChild(MatTable) table: MatTable<Meter> | undefined;
 
   constructor(
     private automationService: AutomationService,
     private _snackBar: MatSnackBar,
-    private helperService: HelperService,
-    private sanitizer: DomSanitizer
+    private helperService: HelperService
   ) {
     this.automation = this.automationService.getAutomation();
-    // this.dataSource = this.automationService.getMetersArray();
+    this.getSchemas$$ = this.helperService.getSchemas().subscribe((schemas) => {
+      schemas.forEach((schema) => {
+        let schemaName = schema.replace('schemas/', '').replace('.json', '');
+        this.schemaNames.push(schemaName);
+      });
+    });
   }
 
   removeMeter(deviceName: string, type: string) {
@@ -70,12 +76,15 @@ export class AutomationComponent {
   }
 
   generate() {
-    this.script="";
-    this.scriptHTML="";
+    this.script = '';
+    this.scriptHTML = '';
     this.script = this.automationService.generate();
     let CRLF = '\r\n';
-    this.scriptHTML=this.script.split(CRLF).join('<br>').split(" ").join('&nbsp;');
-
+    this.scriptHTML = this.script
+      .split(CRLF)
+      .join('<br>')
+      .split(' ')
+      .join('&nbsp;');
   }
 
   save() {
@@ -83,6 +92,4 @@ export class AutomationComponent {
       .saveScript(this.automation.name, this.script)
       .subscribe((results) => console.log(results));
   }
-
-
 }

@@ -4,9 +4,9 @@
       <div style="grid-column: 1">
         <mat-form-field>
           <mat-label>Result Data</mat-label>
-          <mat-select [(ngModel)]="automationName">
-            @for (aName of automationNames; track aName) {
-            <mat-option [value]="aName">{{ aName }}</mat-option>
+          <mat-select [(ngModel)]="schemaName">
+            @for (schema of schemaNames; track schema) {
+            <mat-option [value]="schema">{{ schema }}</mat-option>
             }
           </mat-select>
         </mat-form-field>
@@ -170,7 +170,9 @@
               mat-flat-button
               class="fButton"
               (click)="generate()"
-              matTooltip="Generate an automation script: {{automation.name}}.py"
+              matTooltip="Generate an automation script: {{
+                automation.name
+              }}.py"
             >
               Generate
             </button>
@@ -180,7 +182,9 @@
               mat-flat-button
               class="fButton"
               (click)="save()"
-              matTooltip="Save the script and definition : {{automation.name}}.py"
+              matTooltip="Save the script and definition : {{
+                automation.name
+              }}.py"
             >
               Save
             </button>
@@ -189,7 +193,7 @@
             <button
               mat-flat-button
               class="fButton"
-              matTooltip="Run the script : {{automation.name}}.py"
+              matTooltip="Run the script : {{ automation.name }}.py"
             >
               Run
             </button>
@@ -198,16 +202,16 @@
       </mat-card-content></mat-card
     >
     @if(scriptHTML!='') {
-    <mat-card
-    >
-    <mat-card-header>
-      <mat-card-title>{{automation.name}}.py</mat-card-title></mat-card-header>
-    
-    <mat-card-content>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title
+          >{{ automation.name }}.py</mat-card-title
+        ></mat-card-header
+      >
 
-    <div [innerHTML]="scriptHTML"></div>
-    </mat-card-content></mat-card>
-  }
-
+      <mat-card-content>
+        <div [innerHTML]="scriptHTML" class="codeFont"></div> </mat-card-content
+    ></mat-card>
+    }
   </mat-card-content></mat-card
 >
