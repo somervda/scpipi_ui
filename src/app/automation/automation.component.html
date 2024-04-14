@@ -1,55 +1,98 @@
 <mat-card
   ><mat-card-content>
-    <div class="grid-functions" style="width: 100%">
-      <div style="grid-column: 1">
-        <mat-form-field>
-          <mat-label>Result Data</mat-label>
-          <mat-select [(ngModel)]="schemaName">
-            @for (schema of schemaNames; track schema) {
-            <mat-option [value]="schema">{{ schema }}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      </div>
-      <div style="grid-column: span 2">
-        <mat-form-field style="width: 100%">
-          <mat-label>Name</mat-label>
-          <input matInput maxlength="60" [(ngModel)]="automation.name" />
-          <mat-hint
-            >Name is used for file operations, default name is "auto"</mat-hint
-          >
-        </mat-form-field>
-      </div>
-      <div class="action-div">
-        <button
-          mat-flat-button
-          class="fButton"
-          matTooltip="Load the script and defintion"
-        >
-          Load
-        </button>
-      </div>
-      <div style="grid-column: 1">
-        <mat-form-field>
-          <mat-label>Step Time (Seconds)</mat-label>
-          <input
-            class="right-align"
-            matInput
-            [(ngModel)]="automation.stepSeconds"
-          />
-        </mat-form-field>
-      </div>
-      <div>
-        <mat-form-field>
-          <mat-label>Max Time (Seconds)</mat-label>
-          <input
-            class="right-align"
-            matInput
-            [(ngModel)]="automation.maxSeconds"
-          />
-        </mat-form-field>
-      </div>
-    </div>
+    @if(isLoading) {
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title
+          >Load Existing Automation Script</mat-card-title
+        ></mat-card-header
+      >
+      <mat-card-content>
+        <div class="grid-functions" style="width: 100%">
+          <div style="grid-column: span 2">
+            <mat-form-field style="width: 100%">
+              <mat-label>Existing Scripts</mat-label>
+              <mat-select
+                [(ngModel)]="schemaName"
+                matTooltip="Select to load an existing script (or cancel)"
+              >
+                @for (schema of schemaNames; track schema) {
+                <mat-option [value]="schema">{{ schema }}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="action-div">
+            <button
+              mat-flat-button
+              class="fButton"
+              (click)="isLoading = !isLoading"
+              matTooltip="Cancel load operation, return to scripting "
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    } @else {
+
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Scripting </mat-card-title></mat-card-header
+      ><mat-card-content>
+        <div class="grid-functions" style="width: 100%">
+          <div style="grid-column: span 2">
+            <mat-form-field style="width: 100%">
+              <mat-label>Name</mat-label>
+              <input matInput maxlength="60" [(ngModel)]="automation.name" />
+              <mat-hint>Script file name, default name is "auto"</mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="action-div">
+            <button
+              mat-flat-button
+              class="fButton"
+              (click)="isLoading = !isLoading"
+              matTooltip="Load an existing script "
+            >
+              Load
+            </button>
+          </div>
+          <div class="action-div">
+            <button
+              mat-flat-button
+              class="fButton"
+              matTooltip="Clear out script information and delete ant stored scripts with this name"
+            >
+              Clear
+            </button>
+          </div>
+
+          <div style="grid-column: 1">
+            <mat-form-field>
+              <mat-label>Step Time (Seconds)</mat-label>
+              <input
+                class="right-align"
+                matInput
+                [(ngModel)]="automation.stepSeconds"
+              />
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field>
+              <mat-label>Max Time (Seconds)</mat-label>
+              <input
+                class="right-align"
+                matInput
+                [(ngModel)]="automation.maxSeconds"
+              />
+            </mat-form-field>
+          </div>
+        </div> </mat-card-content
+    ></mat-card>
+
     <mat-card>
       <mat-card-header>
         <mat-card-title>JDS6600</mat-card-title>
@@ -129,12 +172,14 @@
           #mytable
         >
           <!--- Note that these columns can be defined in any order.
-        The actual rendered columns are set as a property on the row definition" -->
+    The actual rendered columns are set as a property on the row definition" -->
 
           <!-- deviceName Column -->
           <ng-container matColumnDef="deviceName">
             <th mat-header-cell *matHeaderCellDef>Device.</th>
-            <td mat-cell *matCellDef="let element">{{ element.deviceName }}</td>
+            <td mat-cell *matCellDef="let element">
+              {{ element.deviceName }}
+            </td>
           </ng-container>
 
           <!-- Type -->
@@ -162,6 +207,7 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table> </mat-card-content
     ></mat-card>
+
     <mat-card
       ><mat-card-content>
         <div class="grid-functions" style="width: 100%">
@@ -212,6 +258,6 @@
       <mat-card-content>
         <div [innerHTML]="scriptHTML" class="codeFont"></div> </mat-card-content
     ></mat-card>
-    }
+    } }
   </mat-card-content></mat-card
 >

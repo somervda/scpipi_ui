@@ -44,6 +44,9 @@ export class AutomationComponent {
   scriptHTML = '';
   schemaName = '';
   schemaNames: string[] = [];
+  // Used to determine if we are loading a schema or working with existing one
+  // This flips the controls being shown
+  isLoading = false;
 
   @ViewChild(MatTable) table: MatTable<Meter> | undefined;
 
@@ -88,8 +91,12 @@ export class AutomationComponent {
   }
 
   save() {
+    // Save both the python script and the definition (schema)
     this.helperService
-      .saveScript(this.automation.name, this.script)
-      .subscribe((results) => console.log(results));
+      .writeScript(this.automation.name, this.script)
+      .subscribe((results) => console.log('saveScript:', results));
+    this.helperService
+      .writeSchema(this.automation.name, this.automation)
+      .subscribe((results) => console.log('saveSchema:', results));
   }
 }

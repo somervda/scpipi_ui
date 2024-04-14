@@ -37,14 +37,14 @@ export class HelperService {
     return result;
   }
 
-  saveSchema(name: string, schema: Automation) {
+  writeSchema(name: string, schema: Automation) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
 
-    // console.log('saveScript', name, script);
+    // console.log('writeSchema', name, schema);
     let result = this.http.post<any>(
-      'http://' + Globals.HOSTANDPORT + '/script/' + name,
+      'http://' + Globals.HOSTANDPORT + '/schema/' + name,
       schema,
       { headers: headers }
     );
@@ -86,12 +86,12 @@ export class HelperService {
     return result;
   }
 
-  saveScript(name: string, script: string) {
+  writeScript(name: string, script: string) {
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'text/plain');
     headers.append('Accept', 'text/plain');
 
-    console.log('saveScript', name, script);
+    console.log('writeScript', name, script);
     let result = this.http.post<any>(
       'http://' + Globals.HOSTANDPORT + '/script/' + name,
       script,
