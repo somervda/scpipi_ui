@@ -74,6 +74,11 @@ export class AutomationService {
     return this._automation;
   }
 
+  setAutomation(newAutomation:Automation): Automation {
+    this._automation = newAutomation;
+    return this._automation;
+  }
+
   getJson() {
     // Return stringified version of automation parameters (For saving)
     return JSON.stringify(this._automation);

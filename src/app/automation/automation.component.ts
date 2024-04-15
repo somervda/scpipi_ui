@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, OnDestroy, ViewChild } from '@angular/core';
 import { MatTableModule, MatTable } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -36,8 +36,9 @@ import { Subscription } from 'rxjs';
   templateUrl: './automation.component.html',
   styleUrl: './automation.component.scss',
 })
-export class AutomationComponent {
+export class AutomationComponent implements OnDestroy{
   getSchemas$$: Subscription | undefined;
+  getSchema$$: Subscription | undefined;
   displayedColumns: string[] = ['deviceName', 'type', 'delete'];
   automation: Automation;
   script = '';
@@ -64,6 +65,10 @@ export class AutomationComponent {
     });
   }
 
+  ngOnDestroy(): void {
+    this.automationService.setAutomation(this.automation);
+  }
+
   removeMeter(deviceName: string, type: string) {
     console.log('removeMeter:', deviceName, type);
     let meter: Meter = { deviceName: deviceName, type: type };
@@ -76,6 +81,13 @@ export class AutomationComponent {
     if (this.table) {
       this.table.renderRows();
     }
+  }
+
+  loadSchema() {
+
+    this.getSchema$$ = this.helperService.getSchema(this.schemaName).subscribe((schema) =>
+      this.automation = schema)
+    this.isLoading=false;
   }
 
   generate() {

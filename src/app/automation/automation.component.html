@@ -1,7 +1,7 @@
 <mat-card
   ><mat-card-content>
     @if(isLoading) {
-    <mat-card>
+    <mat-card style="width:100%">
       <mat-card-header>
         <mat-card-title
           >Load Existing Automation Script</mat-card-title
@@ -14,6 +14,7 @@
               <mat-label>Existing Scripts</mat-label>
               <mat-select
                 [(ngModel)]="schemaName"
+                (selectionChange)="loadSchema()"
                 matTooltip="Select to load an existing script (or cancel)"
               >
                 @for (schema of schemaNames; track schema) {
@@ -64,7 +65,7 @@
             <button
               mat-flat-button
               class="fButton"
-              matTooltip="Clear out script information and delete ant stored scripts with this name"
+              matTooltip="Clear out script information and delete any stored scripts with this name"
             >
               Clear
             </button>

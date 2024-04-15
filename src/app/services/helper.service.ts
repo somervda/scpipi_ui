@@ -17,9 +17,10 @@ export class HelperService {
   }
 
   getSchema(name: string) {
-    let result = this.http.get<any>(
+    let result = this.http.get<Automation>(
       'http://' + Globals.HOSTANDPORT + '/schema/' + name
     );
+    console.log("getSchema:",result)
     return result;
   }
 
