@@ -8,6 +8,11 @@ import { MatCardModule } from '@angular/material/card';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogModule,
+} from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import {
   AutomationService,
@@ -17,6 +22,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HelperService } from '../services/helper.service';
 import { Subscription } from 'rxjs';
+import { SimpledialogComponent } from '../simpledialog/simpledialog.component';
 
 @Component({
   selector: 'app-automation',
@@ -32,11 +38,13 @@ import { Subscription } from 'rxjs';
     MatSelectModule,
     MatCheckboxModule,
     MatTooltipModule,
+    MatDialogModule,
+    SimpledialogComponent,
   ],
   templateUrl: './automation.component.html',
   styleUrl: './automation.component.scss',
 })
-export class AutomationComponent implements OnDestroy{
+export class AutomationComponent implements OnDestroy {
   getSchemas$$: Subscription | undefined;
   getSchema$$: Subscription | undefined;
   displayedColumns: string[] = ['deviceName', 'type', 'delete'];
@@ -54,7 +62,8 @@ export class AutomationComponent implements OnDestroy{
   constructor(
     private automationService: AutomationService,
     private _snackBar: MatSnackBar,
-    private helperService: HelperService
+    private helperService: HelperService,
+    private dialog: MatDialog
   ) {
     this.automation = this.automationService.getAutomation();
     this.getSchemas$$ = this.helperService.getSchemas().subscribe((schemas) => {
@@ -83,11 +92,26 @@ export class AutomationComponent implements OnDestroy{
     }
   }
 
-  loadSchema() {
+  openDialog() {
+    const dialogConfig = new MatDialogConfig();
 
-    this.getSchema$$ = this.helperService.getSchema(this.schemaName).subscribe((schema) =>
-      this.automation = schema)
-    this.isLoading=false;
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      caption: 'A long text to be displayed',
+    };
+
+    let dialogRef = this.dialog.open(SimpledialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log(`Dialog result: ${result}`);
+    });
+  }
+
+  loadSchema() {
+    this.getSchema$$ = this.helperService
+      .getSchema(this.schemaName)
+      .subscribe((schema) => (this.automation = schema));
+    this.isLoading = false;
   }
 
   generate() {
