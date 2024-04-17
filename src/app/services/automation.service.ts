@@ -74,7 +74,7 @@ export class AutomationService {
     return this._automation;
   }
 
-  setAutomation(newAutomation:Automation): Automation {
+  setAutomation(newAutomation: Automation): Automation {
     this._automation = newAutomation;
     return this._automation;
   }
@@ -93,10 +93,12 @@ export class AutomationService {
       this._automation.meters.findIndex(
         (element) => element.deviceName == 'dho804'
       ) != -1;
-    let xdm1241 =
-      this._automation.meters.findIndex(
-        (element) => element.deviceName == 'xdm1241'
-      ) != -1;
+
+    let xdm1241Index = this._automation.meters.findIndex(
+      (element) => element.deviceName == 'xdm1241'
+    );
+    let xdm1241 = xdm1241Index != -1;
+    let xdm1241Type = this._automation.meters[xdm1241Index].type;
 
     let CRLF = '\r\n';
     let as = '#!/usr/bin/python3' + CRLF + CRLF;
@@ -114,7 +116,11 @@ export class AutomationService {
 
     // Setup environment
     as += '#  Setup environment' + CRLF;
-    as += 'helper = Helper(quiet=True)' + CRLF;
+    as +=
+      'helper = Helper("' +
+      this._automation.name.trim() +
+      '",quiet=True)' +
+      CRLF;
     as += 'result=[]' + CRLF;
     as += 'start=time.time()' + CRLF;
     as += 'step=1' + CRLF;
@@ -161,6 +167,8 @@ export class AutomationService {
         '    print("Error: Owon xdm1241 multimeter did not connect, ending....")' +
         CRLF;
       as += '    exit(0)' + CRLF;
+      as += 'xdm1241.configure("' + xdm1241Type + '",0,0)' + CRLF;
+      as += 'time.sleep(5)' + CRLF;
     }
 
     // **** while loop *****
@@ -201,8 +209,8 @@ export class AutomationService {
             element.type +
             '",str(measure["measure"]))' +
             CRLF;
-            break;
-          }
+          break;
+        }
         case 'dho804': {
           as += '    measure=dho804.measure("' + element.type + '")' + CRLF;
           as +=
@@ -212,10 +220,10 @@ export class AutomationService {
             element.type +
             '",str(measure["measure"]))' +
             CRLF;
-            break;
+          break;
         }
         case 'xdm1241': {
-          as += '    measure=xdm1241.measure("' + element.type + '")' + CRLF;
+          as += '    measure=xdm1241.measure()' + CRLF;
           as +=
             '    rowJson=helper.addRowMeasurement(rowJson,"' +
             element.deviceName +
@@ -223,7 +231,7 @@ export class AutomationService {
             element.type +
             '",str(measure["measure"]))' +
             CRLF;
-            break;
+          break;
         }
       }
     });
@@ -260,11 +268,7 @@ export class AutomationService {
     as += '    step+=1' + CRLF;
 
     as += CRLF + '#  Write the results' + CRLF;
-    as +=
-      'helper.writeJsonTable("' +
-      this._automation.name.trim() +
-      '",tableJson)' +
-      CRLF;
+    as += 'helper.writeJsonTable(tableJson)' + CRLF;
     as += 'helper.removeStatus()' + CRLF;
     return as;
   }
