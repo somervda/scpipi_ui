@@ -1,6 +1,7 @@
 <mat-card
   ><mat-card-content>
     @if(isLoading) {
+    <!-- Show just the schema load controls -->
     <mat-card style="width: 100%">
       <mat-card-header>
         <mat-card-title
@@ -38,7 +39,7 @@
     </mat-card>
 
     } @else {
-
+    <!-- Show normal automation page -->
     <mat-card>
       <mat-card-header>
         <mat-card-title>Scripting </mat-card-title></mat-card-header
@@ -61,21 +62,6 @@
               Load
             </button>
           </div>
-          <div class="action-div">
-            <button
-              mat-flat-button
-              class="fButton"
-              (click)="deleteScript()"
-              matTooltip="Delete script and script definition with this name"
-            >
-              Delete
-            </button>
-          </div>
-          <!-- <div class="action-div">
-            <button mat-flat-button class="fButton" (click)="openDialog()">
-              Dialog
-            </button>
-          </div> -->
 
           <div style="grid-column: 1">
             <mat-form-field>
@@ -225,9 +211,11 @@
           <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
         </table> </mat-card-content
     ></mat-card>
-
-    <mat-card
-      ><mat-card-content>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title>Script Management </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
         <div class="grid-functions" style="width: 100%">
           <div class="action-div">
             <button
@@ -257,11 +245,57 @@
             <button
               mat-flat-button
               class="fButton"
+              (click)="deleteScript()"
+              matTooltip="Delete script and script definition {{
+                automation.name
+              }}.py"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+
+        <div
+          class="grid-functions"
+          style="
+            width: 100%;
+            background-color: rgb(238, 238, 238);
+            border-radius: 3px;
+            padding: 5px;
+            margin-top: 5px;
+          "
+        >
+          @if (! status["pid"] ) {
+          <!-- No script running -->
+          <div class="action-div" style="grid-column: 1">
+            <button
+              mat-flat-button
+              class="fButton"
               matTooltip="Run the script : {{ automation.name }}.py"
+              (click)="run()"
             >
               Run
             </button>
           </div>
+          } @else {
+          <div style="grid-column: span 3">
+            The {{ status["name"] }}.py script is running, step #
+            {{ status["step"] }}
+            @if (status["message"] != '' ) { ,
+            {{ status["message"] }} } @if (status["freq"]) { ,
+            {{ status["freq"] }}Hz }
+          </div>
+          <div class="action-div">
+            <button
+              mat-flat-button
+              class="fButton"
+              matTooltip="Kill the running script : {{ status['name'] }}.py"
+              (click)="kill()"
+            >
+              Kill
+            </button>
+          </div>
+          }
         </div>
       </mat-card-content></mat-card
     >

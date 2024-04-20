@@ -1,14 +1,14 @@
-@media (min-width: 800px) {
+@media (min-width: 1000px) {
   .grid-functions {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-gap: 10px;
-    max-width: 750px;
+    max-width: px;
     grid-gap: 10px;
   }
 }
 
-@media (min-width: 400px) and (max-width: 800px) {
+@media (min-width: 400px) and (max-width: 1000px) {
   .grid-functions {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -24,7 +24,6 @@
 
 .fButton {
   width: 110px;
-  margin-bottom: 10px;
   border-style: solid;
   border-color: gray;
   border-width: 1px;

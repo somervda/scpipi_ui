@@ -1,4 +1,4 @@
-import { Component, OnDestroy, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { MatTableModule, MatTable } from '@angular/material/table';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,8 +20,8 @@ import {
   Automation,
 } from '../services/automation.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { HelperService } from '../services/helper.service';
-import { Subscription } from 'rxjs';
+import { HelperService, Status } from '../services/helper.service';
+import { Subscription, interval } from 'rxjs';
 import { SimpledialogComponent } from '../simpledialog/simpledialog.component';
 
 @Component({
@@ -44,17 +44,22 @@ import { SimpledialogComponent } from '../simpledialog/simpledialog.component';
   templateUrl: './automation.component.html',
   styleUrl: './automation.component.scss',
 })
-export class AutomationComponent implements OnDestroy {
+export class AutomationComponent implements OnInit, OnDestroy {
   getSchemas$$: Subscription | undefined;
   getSchema$$: Subscription | undefined;
+  checkStatus$$: Subscription | undefined;
+  getStatus$$: Subscription | undefined;
   deleteSchema$$: Subscription | undefined;
   deleteScript$$: Subscription | undefined;
+  runscript$$: Subscription | undefined;
+  killscript$$: Subscription | undefined;
   displayedColumns: string[] = ['deviceName', 'type', 'delete'];
   automation: Automation;
   script = '';
   scriptHTML = '';
   schemaName = '';
   schemaNames: string[] = [];
+  status: Status = {};
   // Used to determine if we are loading a schema or working with existing one
   // This flips the controls being shown
   isLoading = false;
@@ -69,6 +74,15 @@ export class AutomationComponent implements OnDestroy {
   ) {
     this.automation = this.automationService.getAutomation();
     this.getSchemas();
+  }
+
+  ngOnInit(): void {
+    this.checkStatus$$ = interval(3000).subscribe(() => {
+      this.getStatus$$ = this.helperService.getStatus().subscribe((status) => {
+        this.status = status;
+        console.log(status);
+      });
+    });
   }
 
   getSchemas() {
@@ -95,7 +109,15 @@ export class AutomationComponent implements OnDestroy {
     }
   }
 
-  openDialog() {}
+  run() {
+    this.runscript$$ = this.helperService
+      .runscript(this.automation.name)
+      .subscribe();
+  }
+
+  kill() {
+    this.killscript$$ = this.helperService.killscript().subscribe();
+  }
 
   loadSchema() {
     this.getSchema$$ = this.helperService
@@ -177,6 +199,18 @@ export class AutomationComponent implements OnDestroy {
     }
     if (this.deleteScript$$) {
       this.deleteScript$$.unsubscribe();
+    }
+    if (this.checkStatus$$) {
+      this.checkStatus$$.unsubscribe();
+    }
+    if (this.getStatus$$) {
+      this.getStatus$$.unsubscribe();
+    }
+    if (this.runscript$$) {
+      this.runscript$$.unsubscribe();
+    }
+    if (this.killscript$$) {
+      this.killscript$$.unsubscribe();
     }
   }
 }

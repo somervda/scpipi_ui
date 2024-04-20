@@ -3,6 +3,15 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Globals } from '../app.config';
 import { Automation } from './automation.service';
 
+export interface Status {
+  name?: string;
+  state?: string;
+  step?: number;
+  message?: string;
+  freq?: number;
+  pid?: number;
+}
+
 @Injectable({
   providedIn: 'root',
 })
@@ -10,7 +19,7 @@ export class HelperService {
   constructor(private http: HttpClient) {}
 
   getStatus() {
-    let result = this.http.get<any>(
+    let result = this.http.get<Status>(
       'http://' + Globals.HOSTANDPORT + '/status'
     );
     return result;
@@ -20,7 +29,7 @@ export class HelperService {
     let result = this.http.get<Automation>(
       'http://' + Globals.HOSTANDPORT + '/schema/' + name
     );
-    console.log("getSchema:",result)
+    console.log('getSchema:', result);
     return result;
   }
 
@@ -76,6 +85,20 @@ export class HelperService {
   getScripts() {
     let result = this.http.get<any>(
       'http://' + Globals.HOSTANDPORT + '/script'
+    );
+    return result;
+  }
+
+  killscript() {
+    let result = this.http.get<any>(
+      'http://' + Globals.HOSTANDPORT + '/killscript'
+    );
+    return result;
+  }
+
+  runscript(name: string) {
+    let result = this.http.get<any>(
+      'http://' + Globals.HOSTANDPORT + '/runscript/' + name
     );
     return result;
   }

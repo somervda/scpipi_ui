@@ -78,66 +78,65 @@
       </div>
       } }
     </div>
-    @if(displayChart) { @if(xAxisName=='frequency') {
-    <ngx-charts-line-chart
-      [legend]="legend"
-      [showXAxisLabel]="showXAxisLabel"
-      [showYAxisLabel]="showYAxisLabel"
-      [xAxis]="xAxis"
-      [yAxis]="yAxis"
-      [xAxisLabel]="xAxisLabel"
-      [yAxisLabel]="yAxisLabel"
-      [timeline]="timeline"
-      [results]="multi"
-      [view]="view"
-      [xAxisTickFormatting]="getMathPower"
-    >
-      <ng-template #tooltipTemplate let-model="model">
-        <span class="tooltip-label">{{ getMathPower(model.name) }}Hz</span>
-        <span class="tooltip-val">{{ model.value }}</span>
-      </ng-template>
-      <ng-template #seriesTooltipTemplate let-model="model">
-        <span class="tooltip-label" *ngFor="let series of model">
-          {{ series.value }}
-        </span>
-      </ng-template>
-    </ngx-charts-line-chart>
-    } @else if(xAxisName=='timestamp') {
-    <ngx-charts-line-chart
-      [legend]="legend"
-      [showXAxisLabel]="showXAxisLabel"
-      [showYAxisLabel]="showYAxisLabel"
-      [xAxis]="xAxis"
-      [yAxis]="yAxis"
-      [xAxisLabel]="xAxisLabel"
-      [yAxisLabel]="yAxisLabel"
-      [timeline]="timeline"
-      [results]="multi"
-      [view]="view"
-    >
-      <ng-template #tooltipTemplate let-model="model">
-        <span class="tooltip-label">{{
-          model.name.toLocaleString("en-US")
-        }}</span>
-        <span class="tooltip-val">{{ model.value }}</span>
-      </ng-template>
-    </ngx-charts-line-chart>
+    <div style="width: 100%; max-height: 400px">
+      @if(displayChart) { @if(xAxisName=='frequency') {
+      <ngx-charts-line-chart
+        [legend]="legend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxis]="xAxis"
+        [yAxis]="yAxis"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [timeline]="timeline"
+        [results]="multi"
+        [xAxisTickFormatting]="getMathPower"
+      >
+        <ng-template #tooltipTemplate let-model="model">
+          <span class="tooltip-label">{{ getMathPower(model.name) }}Hz</span>
+          <span class="tooltip-val">{{ model.value }}</span>
+        </ng-template>
+        <ng-template #seriesTooltipTemplate let-model="model">
+          <span class="tooltip-label" *ngFor="let series of model">
+            {{ series.value }}
+          </span>
+        </ng-template>
+      </ngx-charts-line-chart>
+      } @else if(xAxisName=='timestamp') {
+      <ngx-charts-line-chart
+        [legend]="legend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxis]="xAxis"
+        [yAxis]="yAxis"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [timeline]="timeline"
+        [results]="multi"
+      >
+        <ng-template #tooltipTemplate let-model="model">
+          <span class="tooltip-label">{{
+            model.name.toLocaleString("en-US")
+          }}</span>
+          <span class="tooltip-val">{{ model.value }}</span>
+        </ng-template>
+      </ngx-charts-line-chart>
 
-    } @else {
-    <ngx-charts-line-chart
-      [legend]="legend"
-      [showXAxisLabel]="showXAxisLabel"
-      [showYAxisLabel]="showYAxisLabel"
-      [xAxis]="xAxis"
-      [yAxis]="yAxis"
-      [xAxisLabel]="xAxisLabel"
-      [yAxisLabel]="yAxisLabel"
-      [timeline]="timeline"
-      [results]="multi"
-      [view]="view"
-    >
-    </ngx-charts-line-chart>
+      } @else {
+      <ngx-charts-line-chart
+        [legend]="legend"
+        [showXAxisLabel]="showXAxisLabel"
+        [showYAxisLabel]="showYAxisLabel"
+        [xAxis]="xAxis"
+        [yAxis]="yAxis"
+        [xAxisLabel]="xAxisLabel"
+        [yAxisLabel]="yAxisLabel"
+        [timeline]="timeline"
+        [results]="multi"
+      >
+      </ngx-charts-line-chart>
 
-    } }
+      } }
+    </div>
   </mat-card-content></mat-card
 >
