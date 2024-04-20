@@ -65,16 +65,17 @@
             <button
               mat-flat-button
               class="fButton"
-              matTooltip="Clear out script information and delete any stored scripts with this name"
+              (click)="deleteScript()"
+              matTooltip="Delete script and script definition with this name"
             >
-              Clear
+              Delete
             </button>
           </div>
-          <div class="action-div">
+          <!-- <div class="action-div">
             <button mat-flat-button class="fButton" (click)="openDialog()">
               Dialog
             </button>
-          </div>
+          </div> -->
 
           <div style="grid-column: 1">
             <mat-form-field>
@@ -157,6 +158,17 @@
                 [disabled]="!automation.useJds6600"
                 matInput
                 [(ngModel)]="automation.jds6600StopHz"
+              />
+            </mat-form-field>
+          </div>
+          <div>
+            <mat-form-field>
+              <mat-label>Volts</mat-label>
+              <input
+                class="right-align"
+                [disabled]="!automation.useJds6600"
+                matInput
+                [(ngModel)]="automation.jds6600Volts"
               />
             </mat-form-field>
           </div>

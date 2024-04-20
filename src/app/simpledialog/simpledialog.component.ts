@@ -17,7 +17,7 @@ import {
 })
 export class SimpledialogComponent {
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { caption: string },
+    @Inject(MAT_DIALOG_DATA) public data: { heading: string; text: string },
     private dialogRef: MatDialogRef<SimpledialogComponent>
   ) {}
 

@@ -1,8 +1,8 @@
 <mat-card
   ><mat-card-content>
-    <div class="grid-functions">
-      <div style="grid-column: 1">
-        <mat-form-field>
+    <div class="grid-functions" style="width: 100%">
+      <div style="grid-column: span 2; width: 100%">
+        <mat-form-field style="width: 100%">
           <mat-label>Result Data</mat-label>
           <mat-select [(ngModel)]="resultName">
             @for (resultData of results; track resultData) {
@@ -14,6 +14,16 @@
       <div>
         <button mat-flat-button class="fButton" (click)="getResults()">
           Get Data
+        </button>
+      </div>
+      <div>
+        <button
+          mat-flat-button
+          class="fButton"
+          (click)="deleteResults()"
+          matTooltip="Delete the selected results data {{ resultName }}.json"
+        >
+          Delete
         </button>
       </div>
 
@@ -40,14 +50,30 @@
         </mat-form-field>
       </div>
       <div>
-        <button mat-flat-button class="fButton" (click)="downloadResults()">
-          Download
-        </button>
+        <mat-checkbox [(ngModel)]="useFilter">Filter data?</mat-checkbox>
       </div>
-      @if (xAxisName>'' && yAxisName>'') {
+      @if(useFilter) {
+      <div style="grid-column: 1">
+        <mat-form-field>
+          <mat-label>Filter (Min)</mat-label>
+          <input class="right-align" matInput [(ngModel)]="filterMin" />
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-label>Filter (Max)</mat-label>
+          <input class="right-align" matInput [(ngModel)]="filterMax" />
+        </mat-form-field>
+      </div>
+      } @if (xAxisName>'' && yAxisName>'') {
       <div style="grid-column: 1">
         <button mat-flat-button class="fButton" (click)="drawChart()">
           Draw Chart
+        </button>
+      </div>
+      <div>
+        <button mat-flat-button class="fButton" (click)="downloadResults()">
+          Download
         </button>
       </div>
       } }
@@ -76,6 +102,27 @@
         </span>
       </ng-template>
     </ngx-charts-line-chart>
+    } @else if(xAxisName=='timestamp') {
+    <ngx-charts-line-chart
+      [legend]="legend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxis]="xAxis"
+      [yAxis]="yAxis"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [timeline]="timeline"
+      [results]="multi"
+      [view]="view"
+    >
+      <ng-template #tooltipTemplate let-model="model">
+        <span class="tooltip-label">{{
+          model.name.toLocaleString("en-US")
+        }}</span>
+        <span class="tooltip-val">{{ model.value }}</span>
+      </ng-template>
+    </ngx-charts-line-chart>
+
     } @else {
     <ngx-charts-line-chart
       [legend]="legend"

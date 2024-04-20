@@ -47,6 +47,8 @@ import { SimpledialogComponent } from '../simpledialog/simpledialog.component';
 export class AutomationComponent implements OnDestroy {
   getSchemas$$: Subscription | undefined;
   getSchema$$: Subscription | undefined;
+  deleteSchema$$: Subscription | undefined;
+  deleteScript$$: Subscription | undefined;
   displayedColumns: string[] = ['deviceName', 'type', 'delete'];
   automation: Automation;
   script = '';
@@ -66,16 +68,17 @@ export class AutomationComponent implements OnDestroy {
     private dialog: MatDialog
   ) {
     this.automation = this.automationService.getAutomation();
+    this.getSchemas();
+  }
+
+  getSchemas() {
+    this.schemaNames = [];
     this.getSchemas$$ = this.helperService.getSchemas().subscribe((schemas) => {
       schemas.forEach((schema) => {
         let schemaName = schema.replace('schemas/', '').replace('.json', '');
         this.schemaNames.push(schemaName);
       });
     });
-  }
-
-  ngOnDestroy(): void {
-    this.automationService.setAutomation(this.automation);
   }
 
   removeMeter(deviceName: string, type: string) {
@@ -92,26 +95,17 @@ export class AutomationComponent implements OnDestroy {
     }
   }
 
-  openDialog() {
-    const dialogConfig = new MatDialogConfig();
-
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.data = {
-      caption: 'A long text to be displayed',
-    };
-
-    let dialogRef = this.dialog.open(SimpledialogComponent, dialogConfig);
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log(`Dialog result: ${result}`);
-    });
-  }
+  openDialog() {}
 
   loadSchema() {
     this.getSchema$$ = this.helperService
       .getSchema(this.schemaName)
-      .subscribe((schema) => (this.automation = schema));
+      .subscribe((schema) => {
+        this.automation = schema;
+        this.automationService.setAutomation(this.automation);
+      });
     this.isLoading = false;
+    this.scriptHTML = '';
   }
 
   generate() {
@@ -126,6 +120,39 @@ export class AutomationComponent implements OnDestroy {
       .join('&nbsp;');
   }
 
+  deleteScript() {
+    const dialogConfig = new MatDialogConfig();
+
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+      heading: 'Confirm Delete',
+      text:
+        'You are requesting that the ' +
+        this.automation.name +
+        '.py script and ' +
+        this.automation.name +
+        '.json files be deleted, confirm(Ok) or cancel',
+    };
+
+    let dialogRef = this.dialog.open(SimpledialogComponent, dialogConfig);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result == true) {
+        console.log('deleteScript:', this.automation.name);
+        this.deleteSchema$$ = this.helperService
+          .deleteSchema(this.automation.name)
+          .subscribe((result) => console.log('deleteSchema:', result));
+        this.deleteScript$$ = this.helperService
+          .deleteScript(this.automation.name)
+          .subscribe((result) => console.log('deleteScript:', result));
+        this.getSchemas();
+        this.automationService.resetAutomation();
+        this.automation = this.automationService.getAutomation();
+        this.scriptHTML = '';
+      }
+    });
+  }
+
   save() {
     // Save both the python script and the definition (schema)
     this.helperService
@@ -134,5 +161,22 @@ export class AutomationComponent implements OnDestroy {
     this.helperService
       .writeSchema(this.automation.name, this.automation)
       .subscribe((results) => console.log('saveSchema:', results));
+    this.getSchemas();
+  }
+
+  ngOnDestroy(): void {
+    this.automationService.setAutomation(this.automation);
+    if (this.getSchemas$$) {
+      this.getSchemas$$.unsubscribe();
+    }
+    if (this.getSchema$$) {
+      this.getSchema$$.unsubscribe();
+    }
+    if (this.deleteSchema$$) {
+      this.deleteSchema$$.unsubscribe();
+    }
+    if (this.deleteScript$$) {
+      this.deleteScript$$.unsubscribe();
+    }
   }
 }

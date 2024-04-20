@@ -61,7 +61,7 @@ export class Xdm1241Component implements OnDestroy, OnInit {
           this._type = type;
           this._addShow = true;
           let meter: Meter = { deviceName: 'xdm1241', type: this._type };
-          if (this.automationService.findMeter(meter)) {
+          if (this.automationService.hasXDM1241()) {
             this._addShow = false;
           }
         } else {

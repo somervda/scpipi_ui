@@ -1,9 +1,9 @@
 <div style="padding: 5px">
-  <h2 mat-dialog-title>Hi</h2>
-  <mat-dialog-content>{{ data.caption }} </mat-dialog-content>
+  <h2 mat-dialog-title>{{ data.heading }}</h2>
+  <mat-dialog-content>{{ data.text }} </mat-dialog-content>
   <mat-dialog-actions>
-    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button [mat-dialog-close]="true">OK</button>
+    <button mat-button mat-dialog-close="false">Cancel</button>
     <!-- The mat-dialog-close directive optionally accepts a value as a result for the dialog. -->
-    <button mat-button [mat-dialog-close]="true">Delete</button>
   </mat-dialog-actions>
 </div>

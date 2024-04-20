@@ -13,6 +13,7 @@ export interface Automation {
   jds6600StepFactor: number;
   jds6600Operator: string;
   jds6600StopHz: number;
+  jds6600Volts: number;
   meters: Meter[];
 }
 
@@ -30,6 +31,7 @@ export class AutomationService {
     jds6600StepFactor: 0,
     jds6600Operator: '+',
     jds6600StopHz: 0,
+    jds6600Volts: 1,
     meters: [],
   };
 
@@ -40,6 +42,33 @@ export class AutomationService {
       (element) =>
         element.deviceName == meter.deviceName && element.type == meter.type
     );
+  }
+
+  resetAutomation() {
+    this._automation = {
+      name: 'auto',
+      maxSeconds: 0,
+      stepSeconds: 0,
+      useJds6600: false,
+      jds6600StartHz: 0,
+      jds6600StepFactor: 0,
+      jds6600Operator: '+',
+      jds6600StopHz: 0,
+      jds6600Volts: 1,
+      meters: [],
+    };
+  }
+
+  hasXDM1241() {
+    // Check to see if an xdm1241 is already defined as a meter
+    // Only one can be set at a time
+    if (
+      this._automation.meters.find((element) => element.deviceName == 'xdm1241')
+    ) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   addMeter(meter: Meter) {
@@ -98,7 +127,10 @@ export class AutomationService {
       (element) => element.deviceName == 'xdm1241'
     );
     let xdm1241 = xdm1241Index != -1;
-    let xdm1241Type = this._automation.meters[xdm1241Index].type;
+    let xdm1241Type = '';
+    if (xdm1241) {
+      xdm1241Type = this._automation.meters[xdm1241Index].type;
+    }
 
     let CRLF = '\r\n';
     let as = '#!/usr/bin/python3' + CRLF + CRLF;
@@ -135,7 +167,11 @@ export class AutomationService {
         CRLF;
       as += '    exit(0)' + CRLF;
       as += 'freq=' + this._automation.jds6600StartHz.toString() + CRLF;
-      as += 'jds6600.configure(freq,1,0)' + CRLF;
+      as +=
+        'jds6600.configure(freq,' +
+        this._automation.jds6600Volts.toString() +
+        ',0)' +
+        CRLF;
       as += 'time.sleep(1)' + CRLF;
     }
 
@@ -183,17 +219,9 @@ export class AutomationService {
       as +=
         '    rowJson=helper.addRowMeasurement(rowJson,"frequency","",freq)' +
         CRLF;
-      as +=
-        '    helper.writeStatus("' +
-        this._automation.name +
-        '","running",step,"",freq)' +
-        CRLF;
+      as += '    helper.writeStatus("running",step,"",freq)' + CRLF;
     } else {
-      as +=
-        '    helper.writeStatus("' +
-        this._automation.name +
-        '","running",step,"")' +
-        CRLF;
+      as += '    helper.writeStatus("running",step,"")' + CRLF;
     }
 
     // Add device measurements
@@ -260,7 +288,11 @@ export class AutomationService {
       }
       as += '    freq = round(freq, 1)' + CRLF;
       // Set the signal generator jds6600 frequency
-      as += '    jds6600.configure(freq,1,0)' + CRLF;
+      as +=
+        '    jds6600.configure(freq,' +
+        this._automation.jds6600Volts.toString() +
+        ',0)' +
+        CRLF;
     }
     // sleep until next step cycle
     as +=
