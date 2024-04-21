@@ -80,28 +80,34 @@
     </div>
     <div style="width: 100%; max-height: 400px">
       @if(displayChart) { @if(xAxisName=='frequency') {
-      <ngx-charts-line-chart
-        [legend]="legend"
-        [showXAxisLabel]="showXAxisLabel"
-        [showYAxisLabel]="showYAxisLabel"
-        [xAxis]="xAxis"
-        [yAxis]="yAxis"
-        [xAxisLabel]="xAxisLabel"
-        [yAxisLabel]="yAxisLabel"
-        [timeline]="timeline"
-        [results]="multi"
-        [xAxisTickFormatting]="getMathPower"
-      >
-        <ng-template #tooltipTemplate let-model="model">
-          <span class="tooltip-label">{{ getMathPower(model.name) }}Hz</span>
-          <span class="tooltip-val">{{ model.value }}</span>
-        </ng-template>
-        <ng-template #seriesTooltipTemplate let-model="model">
-          <span class="tooltip-label" *ngFor="let series of model">
-            {{ series.value }}
-          </span>
-        </ng-template>
-      </ngx-charts-line-chart>
+      <div>
+        <ngx-charts-line-chart
+          [legend]="legend"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxis]="xAxis"
+          [yAxis]="yAxis"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+          [timeline]="timeline"
+          [results]="multi"
+          [xAxisTickFormatting]="getMathPower"
+        >
+          <ng-template #tooltipTemplate let-model="model">
+            <span class="tooltip-label">{{ getMathPower(model.name) }}Hz</span>
+            <span class="tooltip-val">{{ model.value }}</span>
+          </ng-template>
+          <ng-template #seriesTooltipTemplate let-model="model">
+            <span class="tooltip-label" *ngFor="let series of model">
+              {{ series.value }}
+            </span>
+          </ng-template>
+        </ngx-charts-line-chart>
+      </div>
+      <div style="font-size: x-small">
+        Note - db ratios: -3db = 0.707 , -6db = 0.5 , -9db = 0.35 -12db = 0.25 ,
+        -24db = 0.063
+      </div>
       } @else if(xAxisName=='timestamp') {
       <ngx-charts-line-chart
         [legend]="legend"

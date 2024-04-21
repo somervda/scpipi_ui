@@ -193,6 +193,9 @@ export class AutomationService {
         '    print("Error: Rigol dho804 oscilloscope did not connect, ending....")' +
         CRLF;
       as += '    exit(0)' + CRLF;
+      if (this._automation.useJds6600) {
+        as += 'dho804.volts(' + this._automation.jds6600Volts / 5 + ')';
+      }
     }
 
     // If using multimeter xdm1241
@@ -208,7 +211,7 @@ export class AutomationService {
     }
 
     // **** while loop *****
-    as += CRLF + '#  Main automation loop' + CRLF;
+    as += CRLF + CRLF + '#  Main automation loop' + CRLF;
     as +=
       'while (start + ' +
       this._automation.maxSeconds.toString() +
@@ -220,6 +223,11 @@ export class AutomationService {
         '    rowJson=helper.addRowMeasurement(rowJson,"frequency","",freq)' +
         CRLF;
       as += '    helper.writeStatus("running",step,"",freq)' + CRLF;
+      // Set the timebase for the dho804 if varying frequency
+      if (dho804) {
+        as += '    dho804.timebase(1/(freq*8))' + CRLF;
+        as += '    time.sleep(.5)' + CRLF;
+      }
     } else {
       as += '    helper.writeStatus("running",step,"")' + CRLF;
     }
