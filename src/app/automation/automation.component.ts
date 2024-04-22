@@ -80,7 +80,6 @@ export class AutomationComponent implements OnInit, OnDestroy {
     this.checkStatus$$ = interval(3000).subscribe(() => {
       this.getStatus$$ = this.helperService.getStatus().subscribe((status) => {
         this.status = status;
-        console.log(status);
       });
     });
   }
@@ -92,6 +91,7 @@ export class AutomationComponent implements OnInit, OnDestroy {
         let schemaName = schema.replace('schemas/', '').replace('.json', '');
         this.schemaNames.push(schemaName);
       });
+      this.schemaNames.sort();
     });
   }
 
